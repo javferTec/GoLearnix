@@ -74,12 +74,17 @@ GoLearnix es una plataforma educativa tipo Udemy, diseñada para explorar buenas
 ## 🧰 Endpoints (Resumen)
 
 ### 🔐 Servicio de Autenticación (Go)
-| Método | Endpoint | Descripción | Código de estado |
-|--------|----------|-------------|------------------|
-| POST | `/auth/register` | Registro de usuario | 201 Created |
-| POST | `/auth/login` | Login de usuario | 200 OK / 401 Unauthorized |
-| POST | `/auth/logout` | Logout del usuario actual | 204 No Content |
-| DELETE | `/auth/delete` | Eliminar cuenta del usuario actual | 204 No Content |
+*NOTA: Todos los endpoint empiezan con /api/v1/auth*
+
+| Método  | Endpoint         | Descripción                           | Código de estado                     |
+|---------|------------------|---------------------------------------|--------------------------------------|
+| `POST`  | `/register` | Registro de nuevo usuario             | `201 Created`                             |
+| `POST`  | `/login`    | Login del usuario                     | `200 OK`, `401 Unauthorized`              |
+| `POST`  | `/logout`   | Cierre de sesión (invalida el token)  | `204 No Content`, `400/500 Error`         |
+| `GET`   | `/validate` | Valida el token JWT                   | `200 OK`, `401 Unauthorized`              |
+| `GET`   | `/me`       | Obtiene la información del usuario    | `200 OK`, `401 Unauthorized`              |
+| `DELETE`| `/delete`   | Elimina cuenta del usuario actual     | `204 No Content`, `401 Unauthorized`      |
+
 
 ### 🎓 Servicio de Cursos (Java)
 

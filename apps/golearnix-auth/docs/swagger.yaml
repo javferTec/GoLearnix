@@ -1,0 +1,249 @@
+definitions:
+  request.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  request.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+    type: object
+  response.ErrorMessage:
+    properties:
+      message:
+        type: string
+    type: object
+  response.SuccessMessage:
+    properties:
+      email:
+        type: string
+      expires_in:
+        type: string
+      message:
+        type: string
+      token:
+        type: string
+    type: object
+  response.UserInfoResponse:
+    properties:
+      message:
+        type: string
+      user: {}
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/auth/delete:
+    delete:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Usuario eliminado exitosamente
+          schema:
+            $ref: '#/definitions/response.SuccessMessage'
+        "401":
+          description: No autorizado
+          schema:
+            $ref: '#/definitions/response.ErrorMessage'
+        "500":
+          description: Error interno del servidor
+          schema:
+            $ref: '#/definitions/response.ErrorMessage'
+      security:
+      - BearerAuth: []
+      summary: Eliminar la cuenta del usuario actual
+      tags:
+      - User
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Credenciales de inicio de sesión
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token de acceso
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessMessage'
+            - properties:
+                Token:
+                  type: string
+              type: object
+        "400":
+          description: Error en los datos de entrada
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ErrorMessage'
+            - properties:
+                Message:
+                  type: string
+              type: object
+        "401":
+          description: Credenciales incorrectas
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ErrorMessage'
+            - properties:
+                Message:
+                  type: string
+              type: object
+      summary: Iniciar sesión de usuario
+      tags:
+      - Auth
+  /api/v1/auth/logout:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sesión cerrada exitosamente
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessMessage'
+            - properties:
+                Message:
+                  type: string
+              type: object
+        "400":
+          description: Error al cerrar sesión
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ErrorMessage'
+            - properties:
+                Message:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Cerrar sesión del usuario
+      tags:
+      - Auth
+  /api/v1/auth/me:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Información del usuario actual
+          schema:
+            $ref: '#/definitions/response.UserInfoResponse'
+        "401":
+          description: No autorizado
+          schema:
+            $ref: '#/definitions/response.ErrorMessage'
+        "500":
+          description: Error interno del servidor
+          schema:
+            $ref: '#/definitions/response.ErrorMessage'
+      security:
+      - BearerAuth: []
+      summary: Obtener información del usuario actual
+      tags:
+      - User
+  /api/v1/auth/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Detalles del usuario para registro
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Usuario registrado exitosamente
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessMessage'
+            - properties:
+                Message:
+                  type: string
+              type: object
+        "400":
+          description: Error en los datos de entrada
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ErrorMessage'
+            - properties:
+                Message:
+                  type: string
+              type: object
+        "500":
+          description: Error interno del servidor
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ErrorMessage'
+            - properties:
+                Message:
+                  type: string
+              type: object
+      summary: Registrar un nuevo usuario
+      tags:
+      - Auth
+  /api/v1/auth/validate:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token válido
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessMessage'
+            - properties:
+                ' ExpiresIn':
+                  type: string
+                Email:
+                  type: string
+              type: object
+        "401":
+          description: Token inválido o sesión expirada
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ErrorMessage'
+            - properties:
+                Message:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Validar el token JWT
+      tags:
+      - Auth
+securityDefinitions:
+  BearerAuth:
+    description: 'Token JWT en formato Bearer. Ejemplo: "Bearer {token}"'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

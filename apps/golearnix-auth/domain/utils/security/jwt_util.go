@@ -1,6 +1,7 @@
 package security
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -30,7 +31,18 @@ func GenerateToken(userID uuid.UUID, role string, jwtID string, duration time.Du
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(jwtSecret)
+
+	// Firmar el token
+	signedToken, err := token.SignedString(jwtSecret)
+	if err != nil {
+		return "", fmt.Errorf("error al firmar el token: %v", err)
+	}
+
+	// Imprimir el token firmado
+	fmt.Println("Token firmado:", signedToken)
+
+	// Retornar el token firmado
+	return signedToken, nil
 }
 
 // ValidateToken válida el JWT y devuelve los claims si es válido.

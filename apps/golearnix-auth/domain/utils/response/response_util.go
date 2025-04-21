@@ -1,13 +1,29 @@
 package response
 
-import (
-	"github.com/gofiber/fiber/v2"
-)
+import "github.com/gofiber/fiber/v2"
 
-func SuccessResponse(c *fiber.Ctx, status int, message string, data interface{}) error {
-	return c.Status(status).JSON(SuccessMessage{Message: message, Data: data})
+// Response es la forma genérica de todas las respuestas.
+type Response struct {
+	Success bool        `json:"success"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data,omitempty"`
 }
 
-func ErrorResponse(c *fiber.Ctx, status int, message string) error {
-	return c.Status(status).JSON(ErrorMessage{Message: message})
+// Send es la función interna que envía la respuesta.
+func Send(c *fiber.Ctx, status int, success bool, message string, data interface{}) error {
+	return c.Status(status).JSON(Response{
+		Success: success,
+		Message: message,
+		Data:    data,
+	})
+}
+
+// Success shortcut para respuestas 2xx
+func Success(c *fiber.Ctx, status int, message string, data interface{}) error {
+	return Send(c, status, true, message, data)
+}
+
+// Error shortcut para respuestas de error
+func Error(c *fiber.Ctx, status int, message string) error {
+	return Send(c, status, false, message, nil)
 }

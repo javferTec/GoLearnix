@@ -22,6 +22,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
+                "description": "Borra al usuario autenticado y todas sus sesiones.",
                 "consumes": [
                     "application/json"
                 ],
@@ -31,24 +32,24 @@ const docTemplate = `{
                 "tags": [
                     "User"
                 ],
-                "summary": "Eliminar la cuenta del usuario actual",
+                "summary": "Eliminar cuenta de usuario",
                 "responses": {
                     "200": {
                         "description": "Usuario eliminado exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/response.SuccessMessage"
+                            "$ref": "#/definitions/response.Response"
                         }
                     },
                     "401": {
                         "description": "No autorizado",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorMessage"
+                            "$ref": "#/definitions/response.Response"
                         }
                     },
                     "500": {
                         "description": "Error interno del servidor",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorMessage"
+                            "$ref": "#/definitions/response.Response"
                         }
                     }
                 }
@@ -56,6 +57,7 @@ const docTemplate = `{
         },
         "/api/v1/auth/login": {
             "post": {
+                "description": "Valida credenciales y devuelve un JWT válido por 24h.",
                 "consumes": [
                     "application/json"
                 ],
@@ -68,8 +70,8 @@ const docTemplate = `{
                 "summary": "Iniciar sesión de usuario",
                 "parameters": [
                     {
-                        "description": "Credenciales de inicio de sesión",
-                        "name": "request",
+                        "description": "Email y contraseña",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -79,17 +81,20 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Token de acceso",
+                        "description": "Inicio de sesión exitoso",
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.SuccessMessage"
+                                    "$ref": "#/definitions/response.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
-                                        "Token": {
-                                            "type": "string"
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
                                         }
                                     }
                                 }
@@ -97,39 +102,15 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Error en los datos de entrada",
+                        "description": "Credenciales inválidas",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ErrorMessage"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "Message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/response.Response"
                         }
                     },
                     "401": {
                         "description": "Credenciales incorrectas",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ErrorMessage"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "Message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/response.Response"
                         }
                     }
                 }
@@ -142,6 +123,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
+                "description": "Invalida el JWT actual eliminando la sesión en BD.",
                 "consumes": [
                     "application/json"
                 ],
@@ -151,42 +133,24 @@ const docTemplate = `{
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Cerrar sesión del usuario",
+                "summary": "Cerrar sesión",
                 "responses": {
                     "200": {
                         "description": "Sesión cerrada exitosamente",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessMessage"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "Message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/response.Response"
                         }
                     },
-                    "400": {
-                        "description": "Error al cerrar sesión",
+                    "401": {
+                        "description": "Token no proporcionado o inválido",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ErrorMessage"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "Message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno al cerrar sesión",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
                         }
                     }
                 }
@@ -199,6 +163,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
+                "description": "Devuelve los datos del usuario autenticado.",
                 "consumes": [
                     "application/json"
                 ],
@@ -211,21 +176,34 @@ const docTemplate = `{
                 "summary": "Obtener información del usuario actual",
                 "responses": {
                     "200": {
-                        "description": "Información del usuario actual",
+                        "description": "Información del usuario",
                         "schema": {
-                            "$ref": "#/definitions/response.UserInfoResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "401": {
                         "description": "No autorizado",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorMessage"
+                            "$ref": "#/definitions/response.Response"
                         }
                     },
                     "500": {
                         "description": "Error interno del servidor",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorMessage"
+                            "$ref": "#/definitions/response.Response"
                         }
                     }
                 }
@@ -233,6 +211,7 @@ const docTemplate = `{
         },
         "/api/v1/auth/register": {
             "post": {
+                "description": "Crea un usuario con nombre, email, contraseña y rol.",
                 "consumes": [
                     "application/json"
                 ],
@@ -245,8 +224,8 @@ const docTemplate = `{
                 "summary": "Registrar un nuevo usuario",
                 "parameters": [
                     {
-                        "description": "Detalles del usuario para registro",
-                        "name": "request",
+                        "description": "Datos de registro",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -258,55 +237,25 @@ const docTemplate = `{
                     "201": {
                         "description": "Usuario registrado exitosamente",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessMessage"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "Message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/response.Response"
                         }
                     },
                     "400": {
-                        "description": "Error en los datos de entrada",
+                        "description": "Datos inválidos",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ErrorMessage"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "Message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "409": {
+                        "description": "Email ya registrado",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
                         }
                     },
                     "500": {
                         "description": "Error interno del servidor",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ErrorMessage"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "Message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/response.Response"
                         }
                     }
                 }
@@ -319,6 +268,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
+                "description": "Comprueba que el token está activo y devuelve email y tiempo restante.",
                 "consumes": [
                     "application/json"
                 ],
@@ -328,23 +278,23 @@ const docTemplate = `{
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Validar el token JWT",
+                "summary": "Validar token JWT",
                 "responses": {
                     "200": {
                         "description": "Token válido",
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.SuccessMessage"
+                                    "$ref": "#/definitions/response.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
-                                        " ExpiresIn": {
-                                            "type": "string"
-                                        },
-                                        "Email": {
-                                            "type": "string"
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
                                         }
                                     }
                                 }
@@ -352,21 +302,9 @@ const docTemplate = `{
                         }
                     },
                     "401": {
-                        "description": "Token inválido o sesión expirada",
+                        "description": "Token inválido o expirado",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ErrorMessage"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "Message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/response.Response"
                         }
                     }
                 }
@@ -387,53 +325,45 @@ const docTemplate = `{
         },
         "request.RegisterRequest": {
             "type": "object",
+            "required": [
+                "email",
+                "name",
+                "password",
+                "role"
+            ],
             "properties": {
                 "email": {
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 8
                 },
                 "role": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                        "admin",
+                        "instructor",
+                        "student"
+                    ]
                 }
             }
         },
-        "response.ErrorMessage": {
+        "response.Response": {
             "type": "object",
             "properties": {
+                "data": {},
                 "message": {
                     "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
                 }
-            }
-        },
-        "response.SuccessMessage": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "expires_in": {
-                    "type": "string"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
-        "response.UserInfoResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "user": {}
             }
         }
     },

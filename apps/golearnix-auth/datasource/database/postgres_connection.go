@@ -1,8 +1,8 @@
 package database
 
 import (
+	"github.com/gofiber/fiber/v2/log"
 	models2 "golearnix-auth/domain/models"
-	"log"
 	"os"
 
 	"gorm.io/driver/postgres"
@@ -32,19 +32,18 @@ func Connect() error {
 	}*/
 
 	// Realizar migraciones automáticas
-	log.Println("✅ Iniciando migraciones...")
+	// log.Println("✅ Iniciando migraciones...")
 
 	if err := db.AutoMigrate(
 		&models2.User{},    // Migrar el modelo de User
 		&models2.Session{}, // Migrar el modelo de Session
 	); err != nil {
-		log.Printf("❌ Error al ejecutar las migraciones: %v\n", err)
+		//log.Printf("❌ Error al ejecutar las migraciones: %v\n", err)
 		return err
 	}
 
-	// Registrar la conexión a la base de datos
-	DB = db
-	log.Println("✅ Conexión a la base de datos establecida correctamente")
+	DB = db // Registrar la conexión a la base de datos
+	// log.Println("✅ Conexión a la base de datos establecida correctamente")
 
 	return nil
 }

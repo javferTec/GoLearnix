@@ -15,7 +15,7 @@ func SetupAuthRoutes(app *fiber.App, authController *controllers.AuthController,
 	authGroup.Post("/login", authController.LoginHandler)
 
 	// Rutas protegidas con JWT
-	protected := authGroup.Group("/", middlewares.AuthMiddleware(sessionRepo)) // Pasa el repositorio de sesiones aquí
+	protected := authGroup.Group("/", middlewares.AuthMiddleware(sessionRepo))
 	protected.Post("/logout", authController.LogoutHandler)
 	protected.Get("/validate", authController.ValidateHandler)
 }

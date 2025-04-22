@@ -47,6 +47,7 @@ func (as *AuthServiceImpl) Register(req request.RegisterRequest) error {
 		models2.Student:    {},
 	}
 
+	// Verificamos si el rol es válido
 	if _, valid := validRoles[models2.UserRole(req.Role)]; !valid {
 		return fmt.Errorf("rol inválido: %s", req.Role)
 	}
@@ -73,30 +74,33 @@ func (as *AuthServiceImpl) Register(req request.RegisterRequest) error {
 	return nil
 }
 
-// Login autentica un usuario y crea una sesión con un token JWT.
+// Login auténtica un usuario y crea una sesión con un token JWT.
 func (as *AuthServiceImpl) Login(req request.LoginRequest) (string, error) {
+	// Verifica que el usuario exista por correo electrónico
 	user, err := as.UserRepo.FindByEmail(req.Email)
 	if err != nil {
 		return "", fmt.Errorf("usuario no encontrado: %v", err)
 	}
-
+	// Verifica que la contraseña sea correcta
 	if !security.CheckPasswordHash(req.Password, user.PasswordHash) {
 		return "", errors.New("credenciales inválidas")
 	}
 
-	jwtID := uuid.New() // un uuid.UUID
+	jwtID := uuid.New()
+	// Genera un nuevo JWT para el usuario
 	token, err := security.GenerateToken(user.ID, string(user.Role), jwtID.String(), 24*time.Hour)
 	if err != nil {
 		return "", fmt.Errorf("error al generar el token: %v", err)
 	}
 
 	session := models2.Session{
-		UserID:    user.ID, // uuid.UUID
-		JwtID:     jwtID,   // uuid.UUID
+		UserID:    user.ID,
+		JwtID:     jwtID,
 		IssuedAt:  time.Now(),
 		ExpiresAt: time.Now().Add(24 * time.Hour),
 	}
 
+	// Guardamos la sesión en el repositorio
 	if err := as.SessionRepo.CreateSession(&session); err != nil {
 		return "", fmt.Errorf("error al crear sesión: %v", err)
 	}
@@ -115,19 +119,19 @@ func (as *AuthServiceImpl) Logout(jwtID string) error {
 
 // Validate devuelve información del usuario si el ID es válido.
 func (as *AuthServiceImpl) Validate(userID string) (*models2.User, time.Duration, error) {
-	// 1) Buscamos el usuario
+	// Buscamos el usuario
 	user, err := as.UserRepo.FindByID(userID)
 	if err != nil {
 		return nil, 0, fmt.Errorf("usuario no encontrado: %v", err)
 	}
 
-	// 2) Recuperamos la sesión activa (solo las que no hayan expirado)
+	// Recuperamos la sesión activa (solo las que no hayan expirado)
 	session, err := as.SessionRepo.FindActiveSessionByUserID(userID)
 	if err != nil {
 		return nil, 0, fmt.Errorf("sesión no encontrada o expirada: %v", err)
 	}
 
-	// 3) Calculamos el tiempo restante
+	// Calculamos el tiempo restante
 	remaining := session.ExpiresAt.Sub(time.Now())
 	if remaining < 0 {
 		return nil, 0, fmt.Errorf("la sesión ya expiró")

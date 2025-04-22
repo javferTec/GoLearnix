@@ -11,5 +11,5 @@ func SetupRoutes(app *fiber.App, authController *controllers2.AuthController, us
 	SetupAuthRoutes(app, authController, sessionRepo)
 
 	// Configurar rutas del usuario
-	SetupUserRoutes(app, userController, sessionRepo) // Aquí pasas el repositorio de sesiones
+	SetupUserRoutes(app, userController, sessionRepo)
 }

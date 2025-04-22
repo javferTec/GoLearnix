@@ -11,15 +11,9 @@ import (
 
 var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
-// Claims define los datos personalizados del token JWT.
-type Claims struct {
-	Sub  string `json:"sub"`  // ID del usuario
-	Role string `json:"role"` // Rol del usuario
-	jwt.RegisteredClaims
-}
-
 // GenerateToken genera un JWT para un usuario con duración específica y JTI.
 func GenerateToken(userID uuid.UUID, role string, jwtID string, duration time.Duration) (string, error) {
+	// Crea los claims del token
 	claims := Claims{
 		Sub:  userID.String(),
 		Role: role,
@@ -38,15 +32,13 @@ func GenerateToken(userID uuid.UUID, role string, jwtID string, duration time.Du
 		return "", fmt.Errorf("error al firmar el token: %v", err)
 	}
 
-	// Imprimir el token firmado
-	fmt.Println("Token firmado:", signedToken)
-
 	// Retornar el token firmado
 	return signedToken, nil
 }
 
 // ValidateToken válida el JWT y devuelve los claims si es válido.
 func ValidateToken(tokenString string) (*Claims, error) {
+	// Parsea el token con los claims definidos
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})

@@ -1,11 +1,7 @@
 #!/bin/bash
 
 # Configuración
-PGUSER="postgres"
-PGPASSWORD="1234"
-PGHOST="127.0.0.1"
-PGPORT="5432"
-
+source ./.env
 export PGPASSWORD=$PGPASSWORD
 
 # Colores

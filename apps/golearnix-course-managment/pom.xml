@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.4.4</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>com.golearnix</groupId>
+  <artifactId>golearnix-course</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>application</module>
+    <module>boot</module>
+    <module>adapters/output/postgresql-command-repository</module>
+    <module>adapters/output/redis-query-repository</module>
+    <module>adapters/input/api-rest</module>
+    <module>adapters/input/event-kafka</module>
+  </modules>
+
+  <properties>
+    <java.version>21</java.version>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Version of the dependencies -->
+    <!-- Version of the modules -->
+    <application.version>1.0-SNAPSHOT</application.version>
+    <api-rest.version>1.0-SNAPSHOT</api-rest.version>
+    <event-kafka.version>1.0-SNAPSHOT</event-kafka.version>
+    <postgresql-repository.version>1.0-SNAPSHOT</postgresql-repository.version>
+    <redis-repository.version>1.0-SNAPSHOT</redis-repository.version>
+    <!-- Maven plugins versions -->
+    <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+    <maven.resource.plugin.version>3.3.1</maven.resource.plugin.version>
+    <!-- Mapstruct versions -->
+    <org.mapstruct.version>1.6.3</org.mapstruct.version>
+    <mapstruct.processor.version>${org.mapstruct.version}</mapstruct.processor.version>
+    <!-- Lombok-Mapstruct versions -->
+    <lombok-mapstruck-bindings.version>0.2.0</lombok-mapstruck-bindings.version>
+    <!-- PostgreSQL version -->
+    <org.postgresql.version>42.7.5</org.postgresql.version>
+    <!-- Jackson version -->
+    <jackson.version>2.18.3</jackson.version>
+    <!-- SpringDoc version -->
+    <springdoc.version>2.8.6</springdoc.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Dependencia con APPLICATION -->
+      <dependency>
+        <groupId>com.golearnix</groupId>
+        <artifactId>application</artifactId>
+        <version>${application.version}</version>
+      </dependency>
+      <!-- Dependencia con API-REST -->
+      <dependency>
+        <groupId>com.golearnix</groupId>
+        <artifactId>api-rest</artifactId>
+        <version>${api-rest.version}</version>
+      </dependency>
+      <!-- Dependencia con EVENT-KAFKA -->
+      <dependency>
+        <groupId>com.golearnix</groupId>
+        <artifactId>event-kafka</artifactId>
+        <version>${event-kafka.version}</version>
+      </dependency>
+      <!-- Dependencia con POSTGRESQL-REPOSITORY -->
+      <dependency>
+        <groupId>com.golearnix</groupId>
+        <artifactId>postgresql-command-repository</artifactId>
+        <version>${postgresql-repository.version}</version>
+      </dependency>
+      <!-- Dependencia con REDIS-REPOSITORY -->
+      <dependency>
+        <groupId>com.golearnix</groupId>
+        <artifactId>redis-query-repository</artifactId>
+        <version>${redis-repository.version}</version>
+      </dependency>
+      <!-- Dependencia de Mapstruct -->
+      <dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct</artifactId>
+        <version>${org.mapstruct.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct-processor</artifactId>
+        <version>${mapstruct.processor.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <!-- Dependencia de jackson para serializar y deserializar JSON -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <!-- Dependencia de OpenAPI - Swagger -->
+      <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        <version>${springdoc.version}</version>
+      </dependency>
+      <!-- Dependencia de Codec -->
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>1.18.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- Dependencia de lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+    <!-- Dependencia de Mapstruct -->
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct-processor</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.golearnix</groupId>
+    <artifactId>golearnix-course</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>infrastructure</artifactId>
+  <packaging>pom</packaging>
+  <modules>
+    <module>boot</module>
+    <module>datasource/repository</module>
+    <module>datasource/driven/postgresql</module>
+    <module>presentation/rest</module>
+    <module>presentation/event</module>
+    <module>datasource/driven/redis</module>
+  </modules>
+
+  <properties>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- Versiones de dependencias -->
+    <com.golearnix.infra.repository.version>1.0-SNAPSHOT</com.golearnix.infra.repository.version>
+  </properties>
+
+  <dependencyManagement>
+    <!-- Dependencia con REPOSITORY -->
+    <dependencies>
+      <dependency>
+        <groupId>com.golearnix.infra</groupId>
+        <artifactId>repository</artifactId>
+        <version>${com.golearnix.infra.repository.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- Dependencia de Lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+    <!-- Dependencia de Spring Boot -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

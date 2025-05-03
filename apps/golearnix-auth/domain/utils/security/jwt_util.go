@@ -1,7 +1,10 @@
 package security
 
 import (
+	"encoding/hex"
 	"fmt"
+	"github.com/joho/godotenv"
+	"log"
 	"os"
 	"time"
 
@@ -9,7 +12,28 @@ import (
 	"github.com/google/uuid"
 )
 
-var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
+// jwtSecret contiene los bytes decodificados desde el hex en JWT_SECRET
+var jwtSecret []byte
+
+func init() {
+	if err := godotenv.Load(); err != nil {
+		log.Println("⚠️ Advertencia: no se pudo cargar .env en security.init()")
+	}
+
+	hexKey := os.Getenv("JWT_SECRET")
+
+	if hexKey == "" {
+		log.Fatal("JWT_SECRET no configurado")
+	}
+
+	keyBytes, err := hex.DecodeString(hexKey)
+
+	if err != nil {
+		log.Fatalf("error al decodificar el JWT_SECRET desde hex: %v", err)
+	}
+
+	jwtSecret = keyBytes
+}
 
 // GenerateToken genera un JWT para un usuario con duración específica y JTI.
 func GenerateToken(userID uuid.UUID, role string, jwtID string, duration time.Duration) (string, error) {

@@ -3,11 +3,12 @@
 
 -- Insertar usuarios
 INSERT INTO users (id, name, email, password_hash, role, created_at, updated_at) VALUES
-  ('e7b9a1f2-3c4d-4e5f-9a2b-7c8d9e0f1a2b', 'Alice Gómez',    'alice@golearnix.com',    crypt('Passw0rd!', gen_salt('bf')), 'instructor', now(), now()),
-  ('a1d2c3e4-f5b6-7a8c-9d0e-1f2a3b4c5d6e', 'Bob Martínez',    'bob@golearnix.com',      crypt('Secure123$', gen_salt('bf')), 'instructor', now(), now()),
+  ('e7b9a1f2-3c4d-4e5f-9a2b-7c8d9e0f1a2b', 'Alice Gomez',    'alice@golearnix.com',    crypt('Passw0rd!', gen_salt('bf')), 'instructor', now(), now()),
+  ('a1d2c3e4-f5b6-7a8c-9d0e-1f2a3b4c5d6e', 'Bob Martinez',    'bob@golearnix.com',      crypt('Secure123$', gen_salt('bf')), 'instructor', now(), now()),
   ('0f1e2d3c-4b5a-6978-8c7d-6e5f4a3b2c1d', 'Carlos Ruiz',     'carlos@golearnix.com',   crypt('Student1!', gen_salt('bf')), 'student',    now(), now()),
-  ('1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d', 'Diana Fernández', 'diana@golearnix.com',    crypt('MyPass456#', gen_salt('bf')), 'student',    now(), now()),
-  ('9e8f7a6b-5c4d-3e2f-1a0b-9c8d7e6f5a4b', 'Elena López',     'elena@golearnix.com',    crypt('HelloWorld7', gen_salt('bf')), 'student',    now(), now());
+  ('1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d', 'Diana Fernandez', 'diana@golearnix.com',    crypt('MyPass456#', gen_salt('bf')), 'student',    now(), now()),
+  ('9e8f7a6b-5c4d-3e2f-1a0b-9c8d7e6f5a4b', 'Elena Lopez',     'elena@golearnix.com',    crypt('HelloWorld7', gen_salt('bf')), 'student',    now(), now()),
+  ('123e4567-e89b-12d3-a456-426614174000', 'Admin User',      'admin@golearnix.com',    crypt('Adm1nP@ss!', gen_salt('bf')), 'admin',      now(), now());
 
 -- Insertar sesiones
  INSERT INTO sessions (id, user_id, jwt_id, issued_at, expires_at) VALUES

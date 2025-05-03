@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.golearnix</groupId>
+    <artifactId>golearnix-course</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <name>boot</name>
+  <artifactId>boot</artifactId>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <!-- Dependencia con APPLICATION -->
+    <dependency>
+      <groupId>com.golearnix</groupId>
+      <artifactId>application</artifactId>
+    </dependency>
+    <!-- Dependencia con API-REST -->
+    <dependency>
+      <groupId>com.golearnix</groupId>
+      <artifactId>api-rest</artifactId>
+    </dependency>
+    <!-- Dependencia con EVENT-KAFKA -->
+    <dependency>
+      <groupId>com.golearnix</groupId>
+      <artifactId>event-kafka</artifactId>
+    </dependency>
+    <!-- Dependencia con POSTGRESQL-REPOSITORY -->
+    <dependency>
+      <groupId>com.golearnix</groupId>
+      <artifactId>postgresql-command-repository</artifactId>
+    </dependency>
+    <!-- Dependencia con REDIS-REPOSITORY -->
+    <dependency>
+      <groupId>com.golearnix</groupId>
+      <artifactId>redis-query-repository</artifactId>
+    </dependency>
+    <!-- Starter principal para Spring Boot -->
+    <dependency>
+      <artifactId>spring-boot-starter</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <!-- DevTools -->
+    <dependency>
+      <artifactId>spring-boot-devtools</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <optional>true</optional>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Configuración del plugin de recursos -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven.resource.plugin.version}</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      <!-- Plugin de Spring Boot -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <configuration>
+              <additionalProperties>
+                <encoding.reporting>UTF-8</encoding.reporting>
+                <encoding.source>UTF-8</encoding.source>
+                <java.source>${maven.compiler.source}</java.source>
+                <java.target>${maven.compiler.target}</java.target>
+              </additionalProperties>
+            </configuration>
+            <goals>
+              <goal>build-info</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Plugin del compilador de Maven para soportar Lombok, MapStruct y el binding entre ambos -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
+        <configuration>
+          <source>21</source>
+          <target>21</target>
+          <compilerArgs>
+            <arg>-parameters</arg>
+          </compilerArgs>
+          <annotationProcessorPaths>
+            <!-- Procesador de MapStruct -->
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>${org.mapstruct.version}</version>
+            </path>
+            <!-- Procesador de Lombok -->
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+            <!-- Binding entre Lombok y MapStruct -->
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok-mapstruct-binding</artifactId>
+              <version>${lombok-mapstruck-bindings.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+
+</project>

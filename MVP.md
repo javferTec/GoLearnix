@@ -2,8 +2,9 @@
 
 No intentes construir *todo* desde el principio. Elige un **recorte funcional usable y demostrable** que te permita:
 
-- Mostrar cursos
-- Inscribirse
+- Mostrar cursos (/courses)
+- Mostrar detalle de un curso (/courses/id)
+- Inscribirse (/courses/id/users/id)
 - Avanzar en el contenido
 - Ver progreso
 - Login/Register

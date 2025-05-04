@@ -1,0 +1,1 @@
+# El fichero .env no debería incluirse, se ignoraría a través de: .env

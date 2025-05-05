@@ -1,7 +1,5 @@
 TERMINAR ANTES DEL MIÉRCOLES. VAMOSS!!!
 
-- Completar insfrastrucutra de red. Conectar los servicios (docker)
-- Extraer configuración de docker al fichero .env
 - Modificar scripts de creación de datos en redis, utilizando el fichero .env y arreglando las rutas
 - Si con esto ya se crea todo bien, ampliar datos en cursos
   

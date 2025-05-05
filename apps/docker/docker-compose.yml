@@ -3,9 +3,11 @@
 
 services:
 
-  ##############################################################################
-  #################### INFRAESTRUCTURA DE AUTENTICACIÓN ########################
-  ##############################################################################
+#  ##############################################################################
+#  #################### INFRAESTRUCTURA DE AUTENTICACIÓN ########################
+#  ##############################################################################
+
+# // AUTH PSQL ////
   auth-db:
     image: postgres:17.4
     container_name: auth-psql-db
@@ -14,25 +16,23 @@ services:
       POSTGRES_PASSWORD: golearnix
       POSTGRES_DB: auth-db
       TZ: Europe/Madrid
+      restart: always
     ports:
       - "5432:5432"
     volumes:
       - auth-psql-db-data:/var/lib/postgresql/data
       - ./resources/databases/auth-db/1-schema.sql:/docker-entrypoint-initdb.d/1-schema.sql:ro
       - ./resources/databases/auth-db/2-data.sql:/docker-entrypoint-initdb.d/2-data.sql:ro
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U golearnix -d auth-db" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
     networks:
       - local
+# ////////////////
 
+# // RABBITMQ ////
   rabbit:
     image: rabbitmq:3-management
     container_name: rabbit
     hostname: rabbit
+    restart: always
     environment:
       RABBITMQ_DEFAULT_USER: golearnix
       RABBITMQ_DEFAULT_PASS: golearnix
@@ -43,17 +43,14 @@ services:
       - local
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
-    healthcheck:
-      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+# ///////////////
 
-  ##############################################################################
-  #################### INFRAESTRUCTURA DE GESTIÓN DE CURSOS ####################
-  ##############################################################################
 
+#  ##############################################################################
+#  #################### INFRAESTRUCTURA DE GESTIÓN DE CURSOS ####################
+#  ##############################################################################
+
+# // ZOOKEEPER ////
   zookeeper:
     container_name: zookeeper
     image: bitnami/zookeeper:3.9.3
@@ -62,6 +59,7 @@ services:
     volumes:
       - ./resources/zookeeper/jaas.conf:/opt/bitnami/zookeeper/conf/jaas.conf:ro
       - ./resources/zookeeper/zoo.cfg:/opt/bitnami/zookeeper/conf/zoo.cfg:ro
+    restart: always
     environment:
       - ZOO_ENABLE_AUTH=yes
       - ZOO_SERVER_USERS=golearnix
@@ -69,14 +67,11 @@ services:
       - ZOO_CLIENT_USER=golearnix
       - ZOO_CLIENT_PASSWORD=golearnix
       - JVMFLAGS=-Djava.security.auth.login.config=/opt/bitnami/zookeeper/conf/jaas.conf
-    healthcheck:
-      test: ["CMD", "sh", "-c", "echo ruok | nc localhost 2181 | grep imok"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
     networks:
       - local
+# ////////////////
+
+# // KAFKA /////////
 
   kafka:
     container_name: kafka
@@ -89,28 +84,38 @@ services:
       - kafka-data:/bitnami/kafka
       - ./resources/kafka/kafka_jaas.conf:/opt/bitnami/kafka/config/kafka_jaas.conf:ro
     environment:
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
       - KAFKA_OPTS=-Djava.security.auth.login.config=/opt/bitnami/kafka/conf/kafka_jaas.conf
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_CFG_LISTENERS=SASL_PLAINTEXT://:9092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=SASL_PLAINTEXT://localhost:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=SASL_PLAINTEXT://kafka:9092
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=SASL_PLAINTEXT
       - KAFKA_CFG_SASL_ENABLED_MECHANISMS=PLAIN
       - KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL=PLAIN
       - ALLOW_PLAINTEXT_LISTENER=yes
-    healthcheck:
-      test: >
-        kcat -b localhost:9092
-            -X security.protocol=SASL_PLAINTEXT
-            -X sasl.mechanisms=PLAIN
-            -X sasl.username=golearnix
-            -X sasl.password=golearnix
-            -L >/dev/null || exit 1
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+    restart: always
     networks:
       - local
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    restart: always
+    ports:
+      - "8090:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local-cluster
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL=SASL_PLAINTEXT
+      - KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM=PLAIN
+      - KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG=org.apache.kafka.common.security.plain.PlainLoginModule required username="golearnix" password="golearnix";
+    depends_on:
+      - kafka
+    networks:
+      - local
+# /////////////////
+
+# // CURSOS PSQL ///
 
   course-psql-db:
     image: postgres:17.4
@@ -120,6 +125,7 @@ services:
       POSTGRES_PASSWORD: golearnix
       POSTGRES_DB: course-psql-db
       TZ: Europe/Madrid
+    restart: always
     ports:
       - "5433:5432"
     volumes:
@@ -128,14 +134,11 @@ services:
       - ./resources/databases/course-psql-db/1-schema.sql:/docker-entrypoint-initdb.d/1-schema.sql:ro
       - ./resources/databases/course-psql-db/2-data.sql:/docker-entrypoint-initdb.d/2-data.sql:ro
     command: [ "postgres", "-c", "wal_level=logical", "-c", "max_wal_senders=1", "-c", "max_replication_slots=1" ]
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U golearnix -d course-psql-db" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
     networks:
       - local
+# /////////////////
+
+# // DEBEZIUM //////
 
   debezium:
     container_name: debezium
@@ -143,11 +146,12 @@ services:
     depends_on:
       - kafka
       - course-psql-db
+    restart: always
     ports:
       - "8083:8083"
     volumes:
-      - ./resources/debezium/debezium_jaas.conf:/kafka/config/kafka_jaas.conf:ro
       - debezium-data:/kafka/connect
+      - ./resources/debezium/debezium_jaas.conf:/kafka/config/kafka_jaas.conf:ro
     environment:
       - GROUP_ID=1
       - CONFIG_STORAGE_TOPIC=my-connect-configs
@@ -156,18 +160,74 @@ services:
       - CONNECT_SECURITY_PROTOCOL=SASL_PLAINTEXT
       - CONNECT_SASL_MECHANISM=PLAIN
       - KAFKA_OPTS=-Djava.security.auth.login.config=/kafka/config/kafka_jaas.conf
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -s http://localhost:8083/connectors || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+      - CONNECT_REST_ADVERTISED_HOST_NAME=debezium
+      - CONNECT_PRODUCER_SECURITY_PROTOCOL=SASL_PLAINTEXT
+      - CONNECT_PRODUCER_SASL_MECHANISM=PLAIN
+      - CONNECT_PRODUCER_SASL_JAAS_CONFIG=org.apache.kafka.common.security.plain.PlainLoginModule\ required\ username="golearnix"\ password="golearnix";
+      - CONNECT_CONSUMER_SECURITY_PROTOCOL=SASL_PLAINTEXT
+      - CONNECT_CONSUMER_SASL_MECHANISM=PLAIN
+      - CONNECT_CONSUMER_SASL_JAAS_CONFIG=org.apache.kafka.common.security.plain.PlainLoginModule\ required\ username="golearnix"\ password="golearnix";
     networks:
       - local
+
+  create-debezium-psql-connector-init:
+    image: curlimages/curl:8.5.0
+    container_name: create-debezium-psql-connector-init
+    depends_on:
+      - course-psql-db
+      - debezium
+    entrypoint: >
+      sh -c '
+        echo "Esperando a que Debezium esté disponible...";
+        until curl -s http://debezium:8083/; do
+          sleep 30;
+        done;
+        echo "Registrando el conector de Debezium para PostgreSQL...";
+        curl -X POST http://debezium:8083/connectors \
+          -H "Content-Type: application/json" \
+          -d '\''{
+            "name": "course-connector",
+            "config": {
+              "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+              "database.hostname": "course-psql-db",
+              "database.port": "5432",
+              "database.user": "golearnix",
+              "database.password": "golearnix",
+              "database.dbname": "course-psql-db",
+              "database.server.name": "course",
+              "snapshot.mode": "initial",
+              "plugin.name": "pgoutput",
+              "slot.name": "debezium_slot",
+              "publication.name": "debezium_publication",
+              "topic.prefix": "course",
+              "database.history.kafka.bootstrap.servers": "kafka:9092",
+              "database.history.kafka.topic": "dbhistory.course"
+            }
+          }'\'' &&
+        echo "Conector registrado exitosamente.";
+      '
+    networks:
+      - local
+
+  debezium-ui:
+    container_name: debezium-ui
+    image: debezium/debezium-ui:2.4
+    ports:
+      - "8091:8080"
+    depends_on:
+      - debezium
+    environment:
+      - KAFKA_CONNECT_URIS=http://debezium:8083
+    networks:
+      - local
+# /////////////////
+
+# // CURSOS REDIS //
 
   redis:
     image: redis:8.0-rc1-alpine
     container_name: course-redis-db
+    restart: always
     environment:
       TZ: Europe/Madrid
     command: [ "sh", "-c", "redis-server --aclfile /etc/redis/acl.conf --save 60 1 --loglevel warning --dir /data" ]
@@ -176,13 +236,9 @@ services:
     volumes:
       - course-redis-db-data:/data
       - ./resources/databases/course-redis-db/acl/acl.conf:/etc/redis/acl.conf
-    healthcheck:
-      test: [ "CMD", "redis-cli", "-u", "redis://golearnix:golearnix@localhost:6379", "ping" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     networks:
       - local
+# /////////////////
 
 #  redis-init:
 #    image: redis:8.0-rc1-alpine
@@ -213,5 +269,3 @@ volumes:
   rabbitmq-data:
   debezium-data:
   kafka-data:
-
-

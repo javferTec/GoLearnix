@@ -70,3 +70,6 @@ CREATE TABLE reviews (
   comment    TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
+
+-- Configuración de la base de datos para la replicación lógica
+CREATE PUBLICATION debezium_publication FOR ALL TABLES;

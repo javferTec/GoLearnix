@@ -5,12 +5,6 @@ import (
 	"github.com/rabbitmq/amqp091-go"
 )
 
-// EventPublisher es la estructura que maneja la conexión y el canal de RabbitMQ
-type EventPublisher struct {
-	conn    *amqp091.Connection
-	channel *amqp091.Channel
-}
-
 // NewEventPublisher establece la conexión y canal con RabbitMQ
 func NewEventPublisher(amqpURL string) (*EventPublisher, error) {
 	conn, err := amqp091.Dial(amqpURL)

@@ -25,15 +25,6 @@ func Connect() error {
 		return err
 	}
 
-	// Eliminar la tabla de sesiones
-	/*err = db.Migrator().DropTable(&models2.Session{})
-	if err != nil {
-		log.Printf("❌ Error al eliminar la tabla de sesiones: %v\n", err)
-	}*/
-
-	// Realizar migraciones automáticas
-	// log.Println("✅ Iniciando migraciones...")
-
 	if err := db.AutoMigrate(
 		&models2.User{},    // Migrar el modelo de User
 		&models2.Session{}, // Migrar el modelo de Session
@@ -43,7 +34,6 @@ func Connect() error {
 	}
 
 	DB = db // Registrar la conexión a la base de datos
-	// log.Println("✅ Conexión a la base de datos establecida correctamente")
 
 	return nil
 }

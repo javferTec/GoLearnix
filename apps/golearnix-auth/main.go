@@ -9,6 +9,7 @@ import (
 	controllers2 "golearnix-auth/presentation/controllers"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -23,8 +24,9 @@ import (
 // @description Token JWT en formato Bearer. Ejemplo: "Bearer {token}"
 func main() {
 	// Cargar variables de entorno desde el archivo .env
-	if err := godotenv.Load(); err != nil {
-		log.Println("Advertencia: No se pudo cargar el archivo .env")
+	envPath := filepath.Join("..", ".env")
+	if err := godotenv.Load(envPath); err != nil {
+		log.Printf("Advertencia: No se pudo cargar el archivo %s: %v\n", envPath, err)
 	}
 
 	// Verificar si la variable DATABASE_URL está configurada
@@ -38,7 +40,7 @@ func main() {
 	}
 
 	// Event Publisher
-	publisher, err := publishers.NewEventPublisher("amqp://guest:guest@localhost:5672/")
+	publisher, err := publishers.NewEventPublisher("amqp://golearnix:golearnix@localhost:5672/")
 	if err != nil {
 		log.Fatalf("❌ Error conectando a RabbitMQ: %v", err)
 	}
@@ -72,7 +74,7 @@ func main() {
 	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 
 	// Iniciar servidor
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(":2003"))
 }
 
 // 🔍 Consumidor RabbitMQ para debug de eventos publicados

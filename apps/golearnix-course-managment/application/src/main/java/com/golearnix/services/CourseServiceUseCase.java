@@ -59,7 +59,7 @@ public class CourseServiceUseCase implements CourseServicePort {
 
   @Override
   public void delete(Integer id) {
-    getById(id);
+    //getById(id);
     courseCommandRepositoryPort.delete(id);
   }
 

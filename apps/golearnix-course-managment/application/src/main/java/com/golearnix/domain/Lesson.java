@@ -13,9 +13,8 @@ public class Lesson {
 
   private Integer id;
   private String title;
-  private String videoUrl;
-  private Integer duration;
   private int order;
+  private String content;
   private List<Progress> progress;
 
   public void addProgresses(List<Progress> progress) {

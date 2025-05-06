@@ -18,15 +18,12 @@ public class SectionQueryRepositoryAdapter implements SectionQueryRepositoryPort
 
   @Override
   public Optional<Section> getById(Integer id) {
-    return Optional.of(new Section(1, "Section 1", 1, List.of(new Lesson(1, "Lesson 1", "url", 234, 1, List.of(new Progress(1, new User(
-        UUID.randomUUID()), true))))));
+    return Optional.of(new Section(1, "Section 1", 1, List.of(new Lesson(1, "Lesson 1", 1, "content", List.of(new Progress(1, new User(UUID.randomUUID()), true))))));
   }
 
   @Override
   public List<Section> getAllByIds(List<Integer> ids) {
-    return List.of(new Section(1, "Section 1", 1, List.of(new Lesson(1, "Lesson 1", "url", 234, 1, List.of(new Progress(1, new User(
-        UUID.randomUUID()), true))))));
-
+    return List.of(new Section(1, "Section 1", 1, List.of(new Lesson(1, "Lesson 1", 1, "content", List.of(new Progress(1, new User(UUID.randomUUID()), true))))));
   }
 
 }

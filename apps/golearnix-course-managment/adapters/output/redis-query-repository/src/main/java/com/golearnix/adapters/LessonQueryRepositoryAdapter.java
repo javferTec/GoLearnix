@@ -17,7 +17,7 @@ public class LessonQueryRepositoryAdapter implements LessonQueryRepositoryPort {
 
   @Override
   public Optional<Lesson> getById(Integer id) {
-    Lesson lesson = new Lesson(1, "Lesson 1", "url", 234, 1, List.of(new Progress(1, new User(UUID.randomUUID()), true)));
+    Lesson lesson = new Lesson(1, "Lesson 1", 1, "content", List.of(new Progress(1, new User(UUID.randomUUID()), true)));
     return Optional.of(lesson);
   }
 

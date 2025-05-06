@@ -1,9 +1,6 @@
--- Crear la extensión para UUIDs
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 -- Tabla de usuarios
 CREATE TABLE users (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4()
+  id UUID PRIMARY KEY
 );
 
 -- Tabla de categorías de cursos
@@ -58,7 +55,7 @@ CREATE TABLE progress (
   lesson_id  INT REFERENCES lessons(id) ON DELETE CASCADE,
   user_id    UUID REFERENCES users(id) NOT NULL,
   completed  BOOLEAN DEFAULT false,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+  completed_at TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
 -- Tabla de reseñas
@@ -71,5 +68,3 @@ CREATE TABLE reviews (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
--- Configuración de la base de datos para la replicación lógica
-CREATE PUBLICATION debezium_publication FOR ALL TABLES;

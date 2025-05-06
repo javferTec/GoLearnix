@@ -35,7 +35,7 @@ public class CourseQueryRepositoryAdapter implements CourseQueryRepositoryPort{
         "Description 1",
         new User(UUID.randomUUID()),
         new Category(1, "Category 1", "Description 1"),
-        List.of(new Section(1, "Section 1", 1, List.of(new Lesson(1, "Lesson 1", "url", 234, 1, List.of(new Progress(1, new User(UUID.randomUUID()), true)))))),
+        List.of(new Section(1, "Section 1", 1, List.of(new Lesson(1, "Lesson 1", 1, "content",   List.of(new Progress(1, new User(UUID.randomUUID()), true)))))),
         List.of(new Review(1, new User(UUID.randomUUID()), 5, "Great course!")),
         List.of(new Enrollment(1, new User(UUID.randomUUID())))
     );

@@ -63,7 +63,7 @@ public class CourseControllerAdapter {
   }
 
   @PostMapping("/{courseId}/enrollments")
-  @PreAuthorize("hasAnyRole('STUDENT')")
+  @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
   public ResponseEntity<Void> enroll(@PathVariable Integer courseId) {
     UUID userId = currentUserHelper.getId();
     courseServicePort.enroll(courseId, userId);
@@ -71,7 +71,7 @@ public class CourseControllerAdapter {
   }
 
   @PostMapping("/{courseId}/sections/{sectionId}/lessons/{lessonId}/complete")
-  @PreAuthorize("hasAnyRole('STUDENT')")
+  @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
   public ResponseEntity<Void> completeLesson(@PathVariable Integer courseId, @PathVariable Integer sectionId, @PathVariable Integer lessonId) {
     UUID userId = currentUserHelper.getId();
     courseServicePort.completeLesson(courseId, sectionId, lessonId, userId);

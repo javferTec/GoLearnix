@@ -10,7 +10,9 @@ import com.golearnix.domain.Review;
 import com.golearnix.domain.Section;
 import com.golearnix.domain.User;
 import com.golearnix.domain.projections.CourseGetAllProjection;
+import com.golearnix.mappers.specific.CourseRedisMapper;
 import com.golearnix.ports.output.query.CourseQueryRepositoryPort;
+import com.golearnix.repositories.CourseReadRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -21,27 +23,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CourseQueryRepositoryAdapter implements CourseQueryRepositoryPort{
 
+  private final CourseReadRepository courseReadRepository;
+  private final CourseRedisMapper courseRedisMapper;
+
   @Override
   public List<CourseGetAllProjection> getAll() {
-    System.out.println("Fetching all courses");
-    return List.of();
+    return courseReadRepository.findAllProjected();
   }
 
   @Override
   public Optional<Course> getById(Integer id) {
-    Course course = new Course(
-        1,
-        "Course 1",
-        "Description 1",
-        new User(UUID.randomUUID()),
-        new Category(1, "Category 1", "Description 1"),
-        List.of(new Section(1, "Section 1", 1, List.of(new Lesson(1, "Lesson 1", 1, "content",   List.of(new Progress(1, new User(UUID.randomUUID()), true)))))),
-        List.of(new Review(1, new User(UUID.randomUUID()), 5, "Great course!")),
-        List.of(new Enrollment(1, new User(UUID.randomUUID())))
-    );
-
-    System.out.println("Fetching course by id: " + id);
-    return Optional.of(course);
+    return courseReadRepository.findById(id)
+        .map(courseRedisMapper::toDomain);
   }
 
 }

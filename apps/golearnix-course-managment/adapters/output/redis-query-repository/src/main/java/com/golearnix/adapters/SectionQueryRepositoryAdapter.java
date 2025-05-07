@@ -5,7 +5,9 @@ import com.golearnix.domain.Lesson;
 import com.golearnix.domain.Progress;
 import com.golearnix.domain.Section;
 import com.golearnix.domain.User;
+import com.golearnix.mappers.specific.SectionRedisMapper;
 import com.golearnix.ports.output.query.SectionQueryRepositoryPort;
+import com.golearnix.repositories.SectionReadRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -16,14 +18,21 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SectionQueryRepositoryAdapter implements SectionQueryRepositoryPort {
 
+  private final SectionReadRepository sectionReadRepository;
+  private final SectionRedisMapper sectionRedisMapper;
+
   @Override
   public Optional<Section> getById(Integer id) {
-    return Optional.of(new Section(1, "Section 1", 1, List.of(new Lesson(1, "Lesson 1", 1, "content", List.of(new Progress(1, new User(UUID.randomUUID()), true))))));
+    return sectionReadRepository.findById(id)
+        .map(sectionRedisMapper::toDomain);
   }
 
   @Override
   public List<Section> getAllByIds(List<Integer> ids) {
-    return List.of(new Section(1, "Section 1", 1, List.of(new Lesson(1, "Lesson 1", 1, "content", List.of(new Progress(1, new User(UUID.randomUUID()), true))))));
+  return sectionReadRepository.findAllById(ids)
+        .stream()
+        .map(sectionRedisMapper::toDomain)
+        .toList();
   }
 
 }

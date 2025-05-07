@@ -54,6 +54,8 @@
     <jackson.version>2.18.3</jackson.version>
     <!-- SpringDoc version -->
     <springdoc.version>2.8.6</springdoc.version>
+    <!-- Redis version -->
+    <redis.version>0.9.11</redis.version>
   </properties>
 
   <dependencyManagement>
@@ -118,6 +120,12 @@
         <artifactId>commons-codec</artifactId>
         <version>1.18.0</version>
       </dependency>
+      <!-- Dependencias de Redis -->
+      <dependency>
+        <groupId>com.redis.om</groupId>
+        <artifactId>redis-om-spring</artifactId>
+        <version>${redis.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -141,10 +149,6 @@
     <dependency>
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
     </dependency>
     <!--<dependency>
       <groupId>io.confluent</groupId>

@@ -35,7 +35,9 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(HttpMethod.GET,
                 basePath + "/courses",
-                basePath + "/courses/*"
+                basePath + "/courses/*",
+                basePath + "/courses/test", // TODO: Eliminar
+                basePath + "/courses/test/*" // TODO: Eliminar
             ).permitAll()
             .anyRequest().authenticated()
         )

@@ -112,6 +112,8 @@ public class CourseServiceUseCase implements CourseServicePort {
       return newProgress;
     });
 
+    lesson.addProgresses(List.of(progress));
+
     courseCommandRepositoryPort.save(course);
   }
 

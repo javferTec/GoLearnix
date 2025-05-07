@@ -4,6 +4,8 @@ import com.golearnix.common.utils.helpers.CurrentUserHelper;
 import com.golearnix.domain.Course;
 import com.golearnix.domain.projections.CourseGetAllProjection;
 import com.golearnix.ports.input.CourseServicePort;
+import com.golearnix.redis.entities.UserReadModel;
+import com.golearnix.redis.repositories.UserReadRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,8 @@ public class CourseControllerAdapter {
 
   private final CourseServicePort courseServicePort;
   private final CurrentUserHelper currentUserHelper;
+
+  private final UserReadRepository userReadRepository; //TODO: ELIMINAR
 
   @GetMapping
   public ResponseEntity<List<CourseGetAllProjection>> getAll() {
@@ -76,6 +80,18 @@ public class CourseControllerAdapter {
     UUID userId = currentUserHelper.getId();
     courseServicePort.completeLesson(courseId, sectionId, lessonId, userId);
     return ResponseEntity.ok().build();
+  }
+
+  // TODO: ELIMINAR
+  @GetMapping("/test")
+  public ResponseEntity<List<UserReadModel>> test() {
+    return ResponseEntity.ok(userReadRepository.findAll());
+  }
+
+  // TODO: ELIMINAR
+  @GetMapping("/test/{id}")
+  public ResponseEntity<UserReadModel> test(@PathVariable UUID id) {
+    return ResponseEntity.ok(userReadRepository.findById(id).orElse(null));
   }
 
 }

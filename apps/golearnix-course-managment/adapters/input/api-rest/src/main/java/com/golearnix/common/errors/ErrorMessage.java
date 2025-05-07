@@ -12,9 +12,7 @@ import java.util.List;
 public class ErrorMessage {
 
   private final String error;
-
   private final String message;
-
   private final List<String> validationErrors;
 
   public ErrorMessage(Exception exception) {

@@ -226,32 +226,43 @@ services:
 # // CURSOS REDIS //
 
   redis:
-    image: redis:8.0-rc1-alpine
+    image: redis/redis-stack:7.4.0-v3
     container_name: course-redis-db
     restart: always
     environment:
       TZ: Europe/Madrid
-    command: [ "sh", "-c", "redis-server --aclfile /etc/redis/acl.conf --save 60 1 --loglevel warning --dir /data" ]
     ports:
       - "6379:6379"
     volumes:
       - course-redis-db-data:/data
-      - ./resources/databases/course-redis-db/acl/acl.conf:/etc/redis/acl.conf
+      - ./resources/databases/course-redis-db/config/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./resources/databases/course-redis-db/config/acl.conf:/etc/redis/acl.conf
+    command: ["redis-stack-server", "/usr/local/etc/redis/redis.conf"]
+    networks:
+      - local
+
+  redis-init:
+    image: redis/redis-stack:7.4.0-v3
+    container_name: course-redis-init
+    depends_on:
+      - redis
+    volumes:
+      - ./resources/databases/course-redis-db/init/init-course-data.redis:/init-course-data.redis:ro
+    entrypoint:
+      - sh
+      - -c
+      - |
+        echo "Esperando a Redis en redis:6379…"
+        until redis-cli -h redis PING | grep -q PONG; do
+          sleep 1
+        done
+        echo "Redis listo, aplicando init script…"
+        redis-cli -h redis < /init-course-data.redis
+        echo "Inicialización completada."
     networks:
       - local
 # /////////////////
 
-#  redis-init:
-#    image: redis:8.0-rc1-alpine
-#    container_name: course-redis-init
-#    depends_on:
-#      redis:
-#        condition: service_healthy
-#    volumes:
-#      - ./databases/course-redis-db/create-redis-database.sh:/scripts/create-redis-database.sh:ro
-#    entrypoint: ["sh", "/scripts/create-redis-database.sh"]
-#    networks:
-#      - local
 
 ################################################################################
 ####################### VOLÚMENES Y REDES ######################################

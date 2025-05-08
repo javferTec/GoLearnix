@@ -6,8 +6,10 @@ import com.golearnix.jpa.mappers.specific.CourseJpaMapper;
 import com.golearnix.jpa.repositories.CourseEntityJpaRepository;
 import com.golearnix.ports.output.command.CourseCommandRepositoryPort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @RepositoryAdapter
+@Transactional
 @RequiredArgsConstructor
 public class CourseCommandRepositoryAdapter implements CourseCommandRepositoryPort {
 
@@ -22,16 +24,6 @@ public class CourseCommandRepositoryAdapter implements CourseCommandRepositoryPo
   @Override
   public void delete(Integer id) {
     courseEntityJpaRepository.deleteById(id);
-  }
-
-  @Override
-  public void enroll(Course course) {
-    courseEntityJpaRepository.save(courseJpaMapper.toJpaEntity(course));
-  }
-
-  @Override
-  public void completeLesson(Course course) {
-    courseEntityJpaRepository.save(courseJpaMapper.toJpaEntity(course));
   }
 
 }

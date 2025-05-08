@@ -4,8 +4,6 @@ import com.golearnix.common.utils.helpers.CurrentUserHelper;
 import com.golearnix.domain.Course;
 import com.golearnix.domain.projections.CourseGetAllProjection;
 import com.golearnix.ports.input.CourseServicePort;
-import com.golearnix.redis.entities.UserReadModel;
-import com.golearnix.redis.repositories.UserReadRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +31,6 @@ public class CourseControllerAdapter {
   private final CourseServicePort courseServicePort;
   private final CurrentUserHelper currentUserHelper;
 
-  private final UserReadRepository userReadRepository; //TODO: ELIMINAR
-
   @GetMapping
   public ResponseEntity<List<CourseGetAllProjection>> getAll() {
     return ResponseEntity.ok(courseServicePort.getAll());
@@ -46,28 +42,28 @@ public class CourseControllerAdapter {
   }
 
   @PostMapping
-  @PreAuthorize("hasAnyRole('ADMIN','INSTRUCTOR')")
+  @PreAuthorize("hasRole(role.INSTRUCTOR)")
   public ResponseEntity<Void> create(Course course) {
     courseServicePort.create(course);
     return ResponseEntity.ok().build();
   }
 
   @PostMapping("/{id}")
-  @PreAuthorize("hasAnyRole('ADMIN','INSTRUCTOR')")
+  @PreAuthorize("hasRole(role.INSTRUCTOR)")
   public ResponseEntity<Void> update(@PathVariable Integer id, Course course) {
     courseServicePort.update(id, course);
     return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasAnyRole('ADMIN','INSTRUCTOR')")
+  @PreAuthorize("hasRole(role.INSTRUCTOR)")
   public ResponseEntity<Void> delete(@PathVariable Integer id) {
     courseServicePort.delete(id);
     return ResponseEntity.ok().build();
   }
 
   @PostMapping("/{courseId}/enrollments")
-  @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
+  @PreAuthorize("hasRole(role.STUDENT)")
   public ResponseEntity<Void> enroll(@PathVariable Integer courseId) {
     UUID userId = currentUserHelper.getId();
     courseServicePort.enroll(courseId, userId);
@@ -75,23 +71,11 @@ public class CourseControllerAdapter {
   }
 
   @PostMapping("/{courseId}/sections/{sectionId}/lessons/{lessonId}/complete")
-  @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
+  @PreAuthorize("hasRole(role.STUDENT)")
   public ResponseEntity<Void> completeLesson(@PathVariable Integer courseId, @PathVariable Integer sectionId, @PathVariable Integer lessonId) {
     UUID userId = currentUserHelper.getId();
     courseServicePort.completeLesson(courseId, sectionId, lessonId, userId);
     return ResponseEntity.ok().build();
-  }
-
-  // TODO: ELIMINAR
-  @GetMapping("/test")
-  public ResponseEntity<List<UserReadModel>> test() {
-    return ResponseEntity.ok(userReadRepository.findAll());
-  }
-
-  // TODO: ELIMINAR
-  @GetMapping("/test/{id}")
-  public ResponseEntity<UserReadModel> test(@PathVariable UUID id) {
-    return ResponseEntity.ok(userReadRepository.findById(id).orElse(null));
   }
 
 }

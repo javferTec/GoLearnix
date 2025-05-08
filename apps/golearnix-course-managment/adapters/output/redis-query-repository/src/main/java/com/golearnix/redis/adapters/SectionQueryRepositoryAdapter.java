@@ -6,11 +6,13 @@ import com.golearnix.ports.output.query.SectionQueryRepositoryPort;
 import com.golearnix.redis.mappers.specific.SectionRedisMapper;
 import com.golearnix.redis.repositories.SectionReadRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @RepositoryAdapter
+@Transactional
 @RequiredArgsConstructor
 public class SectionQueryRepositoryAdapter implements SectionQueryRepositoryPort {
 

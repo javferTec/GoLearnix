@@ -7,11 +7,13 @@ import com.golearnix.ports.output.query.CourseQueryRepositoryPort;
 import com.golearnix.redis.mappers.specific.CourseRedisMapper;
 import com.golearnix.redis.repositories.CourseReadRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @RepositoryAdapter
+@Transactional
 @RequiredArgsConstructor
 public class CourseQueryRepositoryAdapter implements CourseQueryRepositoryPort{
 

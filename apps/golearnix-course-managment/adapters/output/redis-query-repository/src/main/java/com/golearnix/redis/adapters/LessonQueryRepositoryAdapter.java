@@ -6,10 +6,12 @@ import com.golearnix.ports.output.query.LessonQueryRepositoryPort;
 import com.golearnix.redis.mappers.specific.LessonRedisMapper;
 import com.golearnix.redis.repositories.LessonReadRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @RepositoryAdapter
+@Transactional
 @RequiredArgsConstructor
 public class LessonQueryRepositoryAdapter implements LessonQueryRepositoryPort {
 

@@ -6,11 +6,13 @@ import com.golearnix.ports.output.query.UserQueryRepositoryPort;
 import com.golearnix.redis.mappers.specific.UserRedisMapper;
 import com.golearnix.redis.repositories.UserReadRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @RepositoryAdapter
+@Transactional
 @RequiredArgsConstructor
 public class UserQueryRepositoryAdapter implements UserQueryRepositoryPort {
 

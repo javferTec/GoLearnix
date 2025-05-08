@@ -47,6 +47,11 @@
       <groupId>com.golearnix</groupId>
       <artifactId>redis-query-repository</artifactId>
     </dependency>
+    <!-- Dependencia con EVENT-RABBITMQ -->
+    <dependency>
+      <groupId>com.golearnix</groupId>
+      <artifactId>event-rabbitmq</artifactId>
+    </dependency>
     <!-- Starter principal para Spring Boot -->
     <dependency>
       <artifactId>spring-boot-starter</artifactId>

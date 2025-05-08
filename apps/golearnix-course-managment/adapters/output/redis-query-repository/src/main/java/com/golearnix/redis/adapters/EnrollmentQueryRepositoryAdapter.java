@@ -6,10 +6,12 @@ import com.golearnix.ports.output.query.EnrollmentQueryRepositoryPort;
 import com.golearnix.redis.mappers.specific.EnrollmentRedisMapper;
 import com.golearnix.redis.repositories.EnrollmentReadRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @RepositoryAdapter
+@Transactional
 @RequiredArgsConstructor
 public class EnrollmentQueryRepositoryAdapter implements EnrollmentQueryRepositoryPort {
 

@@ -49,7 +49,7 @@ CREATE TABLE lessons (
 CREATE TABLE enrollments (
   id          SERIAL PRIMARY KEY,
   course_id   INT REFERENCES courses(id) ON DELETE CASCADE,
-  user_id     UUID REFERENCES users(id) NOT NULL,
+  user_id     UUID REFERENCES users(id) ON DELETE CASCADE,
   enrolled_at TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE enrollments (
 CREATE TABLE progress (
   id         SERIAL PRIMARY KEY,
   lesson_id  INT REFERENCES lessons(id) ON DELETE CASCADE,
-  user_id    UUID REFERENCES users(id) NOT NULL,
+  user_id    UUID REFERENCES users(id) ON DELETE CASCADE,
   completed  BOOLEAN DEFAULT false,
   completed_at TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
@@ -66,7 +66,7 @@ CREATE TABLE progress (
 CREATE TABLE reviews (
   id         SERIAL PRIMARY KEY,
   course_id  INT REFERENCES courses(id) ON DELETE CASCADE,
-  user_id    UUID REFERENCES users(id) NOT NULL,
+  user_id    UUID REFERENCES users(id) ON DELETE CASCADE,
   rating     INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
   comment    TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT now()

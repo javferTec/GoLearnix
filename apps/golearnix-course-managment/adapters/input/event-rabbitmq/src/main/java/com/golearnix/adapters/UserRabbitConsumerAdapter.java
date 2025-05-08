@@ -1,7 +1,7 @@
 package com.golearnix.adapters;
 
 import com.golearnix.common.annotations.EventAdapter;
-import com.golearnix.common.dto.UserDeletedEvent;
+import com.golearnix.common.dto.messages.UserDeletedEvent;
 import com.golearnix.ports.input.UserServicePort;
 import com.rabbitmq.client.Channel;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +21,7 @@ public class UserRabbitConsumerAdapter {
   @RabbitListener(queues = "user.deleted.queue", containerFactory = "rabbitListenerContainerFactory")
   public void delete(UserDeletedEvent event, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws IOException {
 
-    String rawId = event.getData().getUserID();
-    if (rawId == null || rawId.isBlank()) {
-      channel.basicAck(tag, false);
-      return;
-    }
-
-    UUID userUuid = UUID.fromString(rawId);
-    userServicePort.delete(userUuid);
+    userServicePort.delete(UUID.fromString(event.getData().getUserID()));
     channel.basicAck(tag, false);
 
   }

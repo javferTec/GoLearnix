@@ -3,11 +3,11 @@
 
 services:
 
-#  ##############################################################################
-#  #################### INFRAESTRUCTURA DE AUTENTICACIÓN ########################
-#  ##############################################################################
+  #  ##############################################################################
+  #  #################### INFRAESTRUCTURA DE AUTENTICACIÓN ########################
+  #  ##############################################################################
 
-# // AUTH PSQL ////
+  # // AUTH PSQL ////
   auth-db:
     image: postgres:17.4
     container_name: auth-psql-db
@@ -25,9 +25,10 @@ services:
       - ./resources/databases/auth-db/2-data.sql:/docker-entrypoint-initdb.d/2-data.sql:ro
     networks:
       - local
-# ////////////////
+  # ////////////////
 
-# // RABBITMQ ////
+  # // RABBITMQ ////
+
   rabbit:
     image: rabbitmq:3-management
     container_name: rabbit
@@ -39,18 +40,21 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    volumes:
+      - ./resources/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+      - ./resources/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - rabbitmq-data:/var/lib/rabbitmq
     networks:
       - local
-    volumes:
-      - rabbitmq-data:/var/lib/rabbitmq
-# ///////////////
+
+  # ///////////////
 
 
-#  ##############################################################################
-#  #################### INFRAESTRUCTURA DE GESTIÓN DE CURSOS ####################
-#  ##############################################################################
+  #  ##############################################################################
+  #  #################### INFRAESTRUCTURA DE GESTIÓN DE CURSOS ####################
+  #  ##############################################################################
 
-# // ZOOKEEPER ////
+  # // ZOOKEEPER ////
   zookeeper:
     container_name: zookeeper
     image: bitnami/zookeeper:3.9.3
@@ -69,9 +73,9 @@ services:
       - JVMFLAGS=-Djava.security.auth.login.config=/opt/bitnami/zookeeper/conf/jaas.conf
     networks:
       - local
-# ////////////////
+  # ////////////////
 
-# // KAFKA /////////
+  # // KAFKA /////////
 
   kafka:
     container_name: kafka
@@ -113,9 +117,9 @@ services:
       - kafka
     networks:
       - local
-# /////////////////
+  # /////////////////
 
-# // CURSOS PSQL ///
+  # // CURSOS PSQL ///
 
   course-psql-db:
     image: postgres:17.4
@@ -137,9 +141,9 @@ services:
     command: [ "postgres", "-c", "wal_level=logical", "-c", "max_wal_senders=1", "-c", "max_replication_slots=1" ]
     networks:
       - local
-# /////////////////
+  # /////////////////
 
-# // DEBEZIUM //////
+  # // DEBEZIUM //////
 
   debezium:
     container_name: debezium
@@ -221,9 +225,9 @@ services:
       - KAFKA_CONNECT_URIS=http://debezium:8083
     networks:
       - local
-# /////////////////
+  # /////////////////
 
-# // CURSOS REDIS //
+  # // CURSOS REDIS //
 
   redis:
     image: redis/redis-stack:7.4.0-v3
@@ -237,7 +241,7 @@ services:
       - course-redis-db-data:/data
       - ./resources/databases/course-redis-db/config/redis.conf:/usr/local/etc/redis/redis.conf
       - ./resources/databases/course-redis-db/config/acl.conf:/etc/redis/acl.conf
-    command: ["redis-stack-server", "/usr/local/etc/redis/redis.conf"]
+    command: [ "redis-stack-server", "/usr/local/etc/redis/redis.conf" ]
     networks:
       - local
 
@@ -261,7 +265,7 @@ services:
         echo "Inicialización completada."
     networks:
       - local
-# /////////////////
+  # /////////////////
 
 
 ################################################################################

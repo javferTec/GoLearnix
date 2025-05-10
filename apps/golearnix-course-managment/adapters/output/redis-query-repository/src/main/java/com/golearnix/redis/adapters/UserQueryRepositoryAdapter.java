@@ -25,4 +25,9 @@ public class UserQueryRepositoryAdapter implements UserQueryRepositoryPort {
         .map(userRedisMapper::toDomain);
   }
 
+  @Override
+  public void delete(UUID id) {
+    userReadRepository.deleteById(id);
+  }
+
 }

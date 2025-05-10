@@ -10,5 +10,8 @@ public interface CourseQueryRepositoryPort {
 
   List<CourseGetAllProjection> getAll();
   Optional<Course> getById(Integer id);
+  void save(Course course);
+  void update(Course course);
+  void delete(Integer id);
 
 }

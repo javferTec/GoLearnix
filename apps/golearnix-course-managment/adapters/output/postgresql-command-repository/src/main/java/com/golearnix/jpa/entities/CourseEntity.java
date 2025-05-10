@@ -47,15 +47,15 @@ public class CourseEntity {
   @JoinColumn(name = "category_id")
   private CategoryEntity category;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true)
   @JoinColumn(name = "course_id")
   private Set<SectionEntity> sections;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true)
   @JoinColumn(name = "course_id")
   private Set<ReviewEntity> reviews;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true)
   @JoinColumn(name = "course_id")
   private Set<EnrollmentEntity> enrollments;
 

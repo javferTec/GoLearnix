@@ -17,6 +17,7 @@ import com.golearnix.ports.input.UserServicePort;
 import com.golearnix.ports.output.command.CourseCommandRepositoryPort;
 import com.golearnix.ports.output.query.CourseQueryRepositoryPort;
 import com.golearnix.services.helper.assembler.CourseAssembler;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -48,22 +49,31 @@ public class CourseServiceUseCase implements CourseServicePort {
   }
 
   @Override
+  @Transactional
   public void create(Course course) {
-    courseCommandRepositoryPort.save(courseAssembler.assemble(course));
+    Course newCourse = courseAssembler.assemble(course);
+    courseCommandRepositoryPort.save(newCourse);
+    courseQueryRepositoryPort.save(newCourse);
   }
 
   @Override
+  @Transactional
   public void update(Integer id, Course course) {
-    courseCommandRepositoryPort.save(courseAssembler.assemble(getById(id), course));
+    Course newCourse = courseAssembler.assemble(getById(id), course);
+    courseCommandRepositoryPort.save(newCourse);
+    courseQueryRepositoryPort.update(newCourse);
   }
 
   @Override
+  @Transactional
   public void delete(Integer id) {
-    //getById(id);
+    getById(id);
     courseCommandRepositoryPort.delete(id);
+    courseQueryRepositoryPort.delete(id);
   }
 
   @Override
+  @Transactional
   public void enroll(Integer courseId, UUID userId) throws UserAlreadyEnrolledInCourse {
 
     Course course = getById(courseId);
@@ -80,9 +90,11 @@ public class CourseServiceUseCase implements CourseServicePort {
 
     course.addEnrollments(List.of(enrollment));
     courseCommandRepositoryPort.save(course);
+    courseQueryRepositoryPort.update(course);
   }
 
   @Override
+  @Transactional
   public void completeLesson(Integer courseId, Integer sectionId, Integer lessonId, UUID userId) {
 
     Course course = getById(courseId);
@@ -115,6 +127,7 @@ public class CourseServiceUseCase implements CourseServicePort {
     lesson.addProgresses(List.of(progress));
 
     courseCommandRepositoryPort.save(course);
+    courseQueryRepositoryPort.update(course);
   }
 
 }

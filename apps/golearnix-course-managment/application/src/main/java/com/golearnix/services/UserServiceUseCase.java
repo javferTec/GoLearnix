@@ -6,6 +6,7 @@ import com.golearnix.domain.User;
 import com.golearnix.ports.input.UserServicePort;
 import com.golearnix.ports.output.command.UserCommandRepositoryPort;
 import com.golearnix.ports.output.query.UserQueryRepositoryPort;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
@@ -24,9 +25,11 @@ public class UserServiceUseCase implements UserServicePort {
   }
 
   @Override
+  @Transactional
   public void delete(UUID id) {
     getById(id);
     userCommandRepositoryPort.delete(id);
+    userQueryRepositoryPort.delete(id);
   }
 
 }

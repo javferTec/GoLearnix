@@ -5,6 +5,7 @@ import com.golearnix.domain.Course;
 import com.golearnix.domain.projections.CourseGetAllProjection;
 import com.golearnix.ports.input.CourseServicePort;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,28 +45,28 @@ public class CourseControllerAdapter {
   }
 
   @PostMapping
-  @PreAuthorize("hasRole(role.INSTRUCTOR)")
-  public ResponseEntity<Void> create(Course course) {
+  @PreAuthorize("hasRole(@role.INSTRUCTOR)")
+  public ResponseEntity<Void> create(@RequestBody @Valid Course course) {
     courseServicePort.create(course);
     return ResponseEntity.ok().build();
   }
 
-  @PostMapping("/{id}")
-  @PreAuthorize("hasRole(role.INSTRUCTOR)")
-  public ResponseEntity<Void> update(@PathVariable Integer id, Course course) {
+  @PutMapping("/{id}")
+  @PreAuthorize("hasRole(@role.INSTRUCTOR)")
+  public ResponseEntity<Void> update(@PathVariable Integer id, @RequestBody @Valid Course course) {
     courseServicePort.update(id, course);
     return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasRole(role.INSTRUCTOR)")
+  @PreAuthorize("hasRole(@role.INSTRUCTOR)")
   public ResponseEntity<Void> delete(@PathVariable Integer id) {
     courseServicePort.delete(id);
     return ResponseEntity.ok().build();
   }
 
   @PostMapping("/{courseId}/enrollments")
-  @PreAuthorize("hasRole(role.STUDENT)")
+  @PreAuthorize("hasRole(@role.STUDENT)")
   public ResponseEntity<Void> enroll(@PathVariable Integer courseId) {
     UUID userId = currentUserHelper.getId();
     courseServicePort.enroll(courseId, userId);
@@ -71,7 +74,7 @@ public class CourseControllerAdapter {
   }
 
   @PostMapping("/{courseId}/sections/{sectionId}/lessons/{lessonId}/complete")
-  @PreAuthorize("hasRole(role.STUDENT)")
+  @PreAuthorize("hasRole(@role.STUDENT)")
   public ResponseEntity<Void> completeLesson(@PathVariable Integer courseId, @PathVariable Integer sectionId, @PathVariable Integer lessonId) {
     UUID userId = currentUserHelper.getId();
     courseServicePort.completeLesson(courseId, sectionId, lessonId, userId);

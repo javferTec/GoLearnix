@@ -1,8 +1,13 @@
 package com.golearnix.domain.projections;
 
-public class CourseGetAllProjection {
+import org.springframework.beans.factory.annotation.Value;
 
-  public interface Title {}
-  public interface Description {}
+public interface CourseGetAllProjection {
+
+  @Value("#{target.title}")
+  String getTitle();
+
+  @Value("#{target.description}")
+  String getDescription();
 
 }

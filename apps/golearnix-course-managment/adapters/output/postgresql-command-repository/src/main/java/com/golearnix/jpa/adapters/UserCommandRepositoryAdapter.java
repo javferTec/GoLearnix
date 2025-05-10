@@ -19,4 +19,5 @@ public class UserCommandRepositoryAdapter implements UserCommandRepositoryPort {
   public void delete(UUID id) {
     userEntityJpaRepository.deleteById(id);
   }
+
 }

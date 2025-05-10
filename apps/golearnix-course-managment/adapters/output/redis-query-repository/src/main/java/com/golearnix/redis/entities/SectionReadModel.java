@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.index.Indexed;
+import com.redis.om.spring.annotations.Indexed;
+import org.springframework.data.annotation.Reference;
 
 import java.util.List;
 

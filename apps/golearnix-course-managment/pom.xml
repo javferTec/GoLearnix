@@ -23,8 +23,8 @@
     <module>adapters/output/postgresql-command-repository</module>
     <module>adapters/output/redis-query-repository</module>
     <module>adapters/input/api-rest</module>
-    <module>adapters/input/event-kafka</module>
     <module>adapters/input/event-rabbitmq</module>
+    <module>adapters/output/init-redis-data</module>
   </modules>
 
   <properties>
@@ -38,10 +38,10 @@
     <!-- Version of the modules -->
     <application.version>1.0-SNAPSHOT</application.version>
     <api-rest.version>1.0-SNAPSHOT</api-rest.version>
-    <event-kafka.version>1.0-SNAPSHOT</event-kafka.version>
     <postgresql-repository.version>1.0-SNAPSHOT</postgresql-repository.version>
     <redis-repository.version>1.0-SNAPSHOT</redis-repository.version>
     <event-rabbit.version>1.0-SNAPSHOT</event-rabbit.version>
+    <init-redis-data.version>1.0-SNAPSHOT</init-redis-data.version>
     <!-- Maven plugins versions -->
     <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     <maven.resource.plugin.version>3.3.1</maven.resource.plugin.version>
@@ -58,6 +58,8 @@
     <springdoc.version>2.8.6</springdoc.version>
     <!-- Redis version -->
     <redis.version>0.9.11</redis.version>
+    <!-- Codec version -->
+    <commons.codec.version>1.18.0</commons.codec.version>
   </properties>
 
   <dependencyManagement>
@@ -73,12 +75,6 @@
         <groupId>com.golearnix</groupId>
         <artifactId>api-rest</artifactId>
         <version>${api-rest.version}</version>
-      </dependency>
-      <!-- Dependencia con EVENT-KAFKA -->
-      <dependency>
-        <groupId>com.golearnix</groupId>
-        <artifactId>event-kafka</artifactId>
-        <version>${event-kafka.version}</version>
       </dependency>
       <!-- Dependencia con POSTGRESQL-REPOSITORY -->
       <dependency>
@@ -97,6 +93,12 @@
         <groupId>com.golearnix</groupId>
         <artifactId>event-rabbitmq</artifactId>
         <version>${event-rabbit.version}</version>
+      </dependency>
+      <!-- Dependencia con INIT-REDIS-DATA -->
+      <dependency>
+        <groupId>com.golearnix</groupId>
+        <artifactId>init-redis-data</artifactId>
+        <version>${init-redis-data.version}</version>
       </dependency>
       <!-- Dependencia de Mapstruct -->
       <dependency>
@@ -126,7 +128,7 @@
       <dependency>
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
-        <version>1.18.0</version>
+        <version>${commons.codec.version}</version>
       </dependency>
       <!-- Dependencias de Redis -->
       <dependency>
@@ -143,7 +145,7 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
-    <!-- Dependencia de Mapstruct -->
+    <!-- Dependencias de Mapstruct -->
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>
@@ -152,17 +154,6 @@
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct-processor</artifactId>
     </dependency>
-    <!-- Kafka TODO: Refactor -->
-    <!-- Core de Spring Kafka -->
-    <!--<dependency>
-      <groupId>org.springframework.kafka</groupId>
-      <artifactId>spring-kafka</artifactId>
-    </dependency>-->
-    <!--<dependency>
-      <groupId>io.confluent</groupId>
-      <artifactId>kafka-avro-serializer</artifactId>
-      <version>7.4.0</version>
-    </dependency>-->
   </dependencies>
 
 </project>

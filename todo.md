@@ -4,8 +4,6 @@ TERMINAR ANTES DEL MIÉRCOLES. VAMOSS!!!
   
 - Probar eventos. Implementar los eventos tras las acciones de escritura.
 
-- Cuando un usuario se elimina en Go se emite un evento, consumirlo con Java y eliminar todo lo relacionado con usuario
-
 ---
 
 Aplicación completada -> Documentar.

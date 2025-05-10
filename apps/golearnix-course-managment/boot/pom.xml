@@ -32,11 +32,6 @@
       <groupId>com.golearnix</groupId>
       <artifactId>api-rest</artifactId>
     </dependency>
-    <!-- Dependencia con EVENT-KAFKA -->
-    <dependency>
-      <groupId>com.golearnix</groupId>
-      <artifactId>event-kafka</artifactId>
-    </dependency>
     <!-- Dependencia con POSTGRESQL-REPOSITORY -->
     <dependency>
       <groupId>com.golearnix</groupId>
@@ -51,6 +46,11 @@
     <dependency>
       <groupId>com.golearnix</groupId>
       <artifactId>event-rabbitmq</artifactId>
+    </dependency>
+    <!-- Dependencia con INIT-REDIS-DATA -->
+    <dependency>
+      <groupId>com.golearnix</groupId>
+      <artifactId>init-redis-data</artifactId>
     </dependency>
     <!-- Starter principal para Spring Boot -->
     <dependency>

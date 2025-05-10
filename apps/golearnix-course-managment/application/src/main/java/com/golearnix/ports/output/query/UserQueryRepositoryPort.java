@@ -8,5 +8,6 @@ import java.util.UUID;
 public interface UserQueryRepositoryPort {
 
   Optional<User> getById(UUID id);
+  void delete(UUID id);
 
 }

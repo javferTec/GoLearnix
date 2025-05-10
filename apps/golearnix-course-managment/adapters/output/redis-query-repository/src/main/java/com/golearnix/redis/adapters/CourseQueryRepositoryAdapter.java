@@ -31,4 +31,19 @@ public class CourseQueryRepositoryAdapter implements CourseQueryRepositoryPort{
         .map(courseRedisMapper::toDomain);
   }
 
+  @Override
+  public void save(Course course) {
+    courseReadRepository.save(courseRedisMapper.toReadModel(course));
+  }
+
+  @Override
+  public void update(Course course) {
+    courseReadRepository.update(courseRedisMapper.toReadModel(course));
+  }
+
+  @Override
+  public void delete(Integer id) {
+    courseReadRepository.deleteById(id);
+  }
+
 }

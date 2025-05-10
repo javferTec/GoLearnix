@@ -5,9 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.golearnix.jpa")
-@EnableRedisDocumentRepositories(basePackages = "com.golearnix.redis")
+@SpringBootApplication(scanBasePackages = {"com.golearnix"})
+@EnableRedisDocumentRepositories(basePackages = {"com.golearnix.redis"})
+@EnableJpaRepositories(basePackages = {"com.golearnix.jpa"})
 public class Application {
 
   public static void main(String[] args) {

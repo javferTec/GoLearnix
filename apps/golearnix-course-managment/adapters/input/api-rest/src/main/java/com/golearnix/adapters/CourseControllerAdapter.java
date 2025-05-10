@@ -4,6 +4,10 @@ import com.golearnix.common.utils.helpers.CurrentUserHelper;
 import com.golearnix.domain.Course;
 import com.golearnix.domain.projections.CourseGetAllProjection;
 import com.golearnix.ports.input.CourseServicePort;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,16 +38,25 @@ public class CourseControllerAdapter {
   private final CourseServicePort courseServicePort;
   private final CurrentUserHelper currentUserHelper;
 
+  @Operation(summary = "Get all courses", description = "Retrieve a list of all available courses")
+  @ApiResponse(responseCode = "200", description = "Successful retrieval of courses")
   @GetMapping
   public ResponseEntity<List<CourseGetAllProjection>> getAll() {
     return ResponseEntity.ok(courseServicePort.getAll());
   }
 
+  @Operation(summary = "Get a course by ID", description = "Retrieve a course by its ID")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "Course found"),
+      @ApiResponse(responseCode = "404", description = "Course not found", content = @Content)
+  })
   @GetMapping("/{id}")
   public ResponseEntity<Course> getById(@PathVariable Integer id) {
     return ResponseEntity.ok(courseServicePort.getById(id));
   }
 
+  @Operation(summary = "Create a new course", description = "Create a course (INSTRUCTOR role only)")
+  @ApiResponse(responseCode = "200", description = "Course successfully created")
   @PostMapping
   @PreAuthorize("hasRole(@role.INSTRUCTOR)")
   public ResponseEntity<Void> create(@RequestBody @Valid Course course) {
@@ -51,6 +64,11 @@ public class CourseControllerAdapter {
     return ResponseEntity.ok().build();
   }
 
+  @Operation(summary = "Update a course", description = "Update an existing course by ID (INSTRUCTOR role only)")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "Course successfully updated"),
+      @ApiResponse(responseCode = "404", description = "Course not found", content = @Content)
+  })
   @PutMapping("/{id}")
   @PreAuthorize("hasRole(@role.INSTRUCTOR)")
   public ResponseEntity<Void> update(@PathVariable Integer id, @RequestBody @Valid Course course) {
@@ -58,6 +76,11 @@ public class CourseControllerAdapter {
     return ResponseEntity.ok().build();
   }
 
+  @Operation(summary = "Delete a course", description = "Delete a course by ID (INSTRUCTOR role only)")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "Course successfully deleted"),
+      @ApiResponse(responseCode = "404", description = "Course not found", content = @Content)
+  })
   @DeleteMapping("/{id}")
   @PreAuthorize("hasRole(@role.INSTRUCTOR)")
   public ResponseEntity<Void> delete(@PathVariable Integer id) {
@@ -65,6 +88,8 @@ public class CourseControllerAdapter {
     return ResponseEntity.ok().build();
   }
 
+  @Operation(summary = "Enroll in a course", description = "Enroll current user into a course (STUDENT role only)")
+  @ApiResponse(responseCode = "200", description = "Enrollment successful")
   @PostMapping("/{courseId}/enrollments")
   @PreAuthorize("hasRole(@role.STUDENT)")
   public ResponseEntity<Void> enroll(@PathVariable Integer courseId) {
@@ -73,6 +98,8 @@ public class CourseControllerAdapter {
     return ResponseEntity.ok().build();
   }
 
+  @Operation(summary = "Complete a lesson", description = "Mark a lesson as completed by the user (STUDENT role only)")
+  @ApiResponse(responseCode = "200", description = "Lesson marked as completed")
   @PostMapping("/{courseId}/sections/{sectionId}/lessons/{lessonId}/complete")
   @PreAuthorize("hasRole(@role.STUDENT)")
   public ResponseEntity<Void> completeLesson(@PathVariable Integer courseId, @PathVariable Integer sectionId, @PathVariable Integer lessonId) {

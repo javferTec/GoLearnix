@@ -1,8 +1,6 @@
 TERMINAR ANTES DEL MIÉRCOLES. VAMOSS!!!
 
-- Añadir swagger (rápido).
-  
-- Probar eventos. Implementar los eventos tras las acciones de escritura.
+- Poner en go como mejora que si un usuario se elimina q verifique si se elimina de la otra bd, sino hacer rollback
 
 ---
 

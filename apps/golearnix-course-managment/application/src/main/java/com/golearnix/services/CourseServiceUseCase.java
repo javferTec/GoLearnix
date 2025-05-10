@@ -3,6 +3,7 @@ package com.golearnix.services;
 import com.golearnix.common.annotations.DomainService;
 import com.golearnix.common.exceptions.ResourceNotFoundException;
 import com.golearnix.common.exceptions.UserAlreadyEnrolledInCourse;
+import com.golearnix.common.utils.Cloner;
 import com.golearnix.domain.Course;
 import com.golearnix.domain.Enrollment;
 import com.golearnix.domain.Lesson;
@@ -10,6 +11,7 @@ import com.golearnix.domain.Progress;
 import com.golearnix.domain.Section;
 import com.golearnix.domain.User;
 import com.golearnix.domain.projections.CourseGetAllProjection;
+import com.golearnix.events.publishers.CourseEventPublisher;
 import com.golearnix.ports.input.CourseServicePort;
 import com.golearnix.ports.input.LessonServicePort;
 import com.golearnix.ports.input.SectionServicePort;
@@ -37,6 +39,10 @@ public class CourseServiceUseCase implements CourseServicePort {
   private final SectionServicePort sectionServicePort;
   private final LessonServicePort lessonServicePort;
 
+  private final CourseEventPublisher eventPublisher;
+  private final Cloner cloner;
+
+
   @Override
   public List<CourseGetAllProjection> getAll() {
     return courseQueryRepositoryPort.getAll();
@@ -53,23 +59,27 @@ public class CourseServiceUseCase implements CourseServicePort {
   public void create(Course course) {
     Course newCourse = courseAssembler.assemble(course);
     courseCommandRepositoryPort.save(newCourse);
-    courseQueryRepositoryPort.save(newCourse);
+
+    eventPublisher.publishCourseCreated(newCourse);
   }
 
   @Override
   @Transactional
   public void update(Integer id, Course course) {
-    Course newCourse = courseAssembler.assemble(getById(id), course);
+    Course oldCourse = getById(id);
+    Course newCourse = courseAssembler.assemble(oldCourse, course);
+
     courseCommandRepositoryPort.save(newCourse);
-    courseQueryRepositoryPort.update(newCourse);
+    eventPublisher.publishCourseUpdated(oldCourse, newCourse);
   }
 
   @Override
   @Transactional
   public void delete(Integer id) {
-    getById(id);
+    Course oldCourse = getById(id);
+
     courseCommandRepositoryPort.delete(id);
-    courseQueryRepositoryPort.delete(id);
+    eventPublisher.publishCourseDeleted(oldCourse);
   }
 
   @Override
@@ -77,6 +87,7 @@ public class CourseServiceUseCase implements CourseServicePort {
   public void enroll(Integer courseId, UUID userId) throws UserAlreadyEnrolledInCourse {
 
     Course course = getById(courseId);
+    Course oldCourse = cloner.copy(course, Course.class);
 
     if (course.getEnrollments().stream()
         .anyMatch(enrollment -> enrollment.getUser().getId().equals(userId))) {
@@ -87,10 +98,10 @@ public class CourseServiceUseCase implements CourseServicePort {
 
     Enrollment enrollment = new Enrollment();
     enrollment.enrollUser(user);
-
     course.addEnrollments(List.of(enrollment));
+
     courseCommandRepositoryPort.save(course);
-    courseQueryRepositoryPort.update(course);
+    eventPublisher.publishCourseUpdated(oldCourse, course);
   }
 
   @Override
@@ -98,6 +109,8 @@ public class CourseServiceUseCase implements CourseServicePort {
   public void completeLesson(Integer courseId, Integer sectionId, Integer lessonId, UUID userId) {
 
     Course course = getById(courseId);
+    Course oldCourse = cloner.copy(course, Course.class);
+
     User user = userServicePort.getById(userId);
     Lesson lesson = lessonServicePort.getById(lessonId);
     Section section = sectionServicePort.getById(sectionId);
@@ -127,7 +140,7 @@ public class CourseServiceUseCase implements CourseServicePort {
     lesson.addProgresses(List.of(progress));
 
     courseCommandRepositoryPort.save(course);
-    courseQueryRepositoryPort.update(course);
+    eventPublisher.publishCourseUpdated(oldCourse, course);
   }
 
 }

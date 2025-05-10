@@ -3,19 +3,10 @@ package com.golearnix.services.helper.assembler;
 import com.golearnix.common.annotations.Assembler;
 import com.golearnix.domain.Category;
 import com.golearnix.domain.Course;
-import com.golearnix.domain.Enrollment;
-import com.golearnix.domain.Review;
-import com.golearnix.domain.Section;
 import com.golearnix.domain.User;
 import com.golearnix.ports.input.CategoryServicePort;
-import com.golearnix.ports.input.EnrollmentServicePort;
-import com.golearnix.ports.input.ReviewServicePort;
-import com.golearnix.ports.input.SectionServicePort;
 import com.golearnix.ports.input.UserServicePort;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Assembler
 @RequiredArgsConstructor

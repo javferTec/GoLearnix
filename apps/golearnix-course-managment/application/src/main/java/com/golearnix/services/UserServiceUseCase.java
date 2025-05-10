@@ -3,6 +3,7 @@ package com.golearnix.services;
 import com.golearnix.common.annotations.DomainService;
 import com.golearnix.common.exceptions.ResourceNotFoundException;
 import com.golearnix.domain.User;
+import com.golearnix.events.publishers.UserEventPublisher;
 import com.golearnix.ports.input.UserServicePort;
 import com.golearnix.ports.output.command.UserCommandRepositoryPort;
 import com.golearnix.ports.output.query.UserQueryRepositoryPort;
@@ -18,6 +19,8 @@ public class UserServiceUseCase implements UserServicePort {
   private final UserQueryRepositoryPort userQueryRepositoryPort;
   private final UserCommandRepositoryPort userCommandRepositoryPort;
 
+  private final UserEventPublisher userEventPublisher;
+
   @Override
   public User getById(UUID id) throws ResourceNotFoundException {
     return userQueryRepositoryPort.getById(id)
@@ -27,9 +30,10 @@ public class UserServiceUseCase implements UserServicePort {
   @Override
   @Transactional
   public void delete(UUID id) {
-    getById(id);
+    User oldUser = getById(id);
+
     userCommandRepositoryPort.delete(id);
-    userQueryRepositoryPort.delete(id);
+    userEventPublisher.publishUserDeleted(oldUser);
   }
 
 }

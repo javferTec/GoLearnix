@@ -1,6 +1,0 @@
-HSET lesson:1 section_id "1" title "Basic Syntax" content "Introduction to Go syntax." order "1" created_at "2025-05-03 23:09:22.066035+02"
-HSET lesson:2 section_id "1" title "Types and Variables" content "Working with types and variables in Go." order "2" created_at "2025-05-03 23:09:22.066035+02"
-HSET lesson:3 section_id "2" title "Error Handling" content "Handling errors and panic/recover." order "1" created_at "2025-05-03 23:09:22.066035+02"
-HSET lesson:4 section_id "3" title "Introduction to UX" content "Basic principles of UX." order "1" created_at "2025-05-03 23:09:22.066035+02"
-HSET lesson:5 section_id "3" title "User Research" content "Research techniques." order "2" created_at "2025-05-03 23:09:22.066035+02"
-HSET lesson:6 section_id "4" title "Sketch" content "Prototyping with Sketch." order "1" created_at "2025-05-03 23:09:22.066035+02"

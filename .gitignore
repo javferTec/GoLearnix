@@ -1,1 +1,2 @@
 # El fichero .env no debería incluirse, se ignoraría a través de: .env
+# Se incluye ya que es un ejemplo de configuración educativo

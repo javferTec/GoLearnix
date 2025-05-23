@@ -1,0 +1,505 @@
+{
+	"info": {
+		"_postman_id": "fb6b83ed-ea04-4f95-bd64-b829446b73ba",
+		"name": "GoLearnix",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40184692"
+	},
+	"item": [
+		{
+			"name": "auht",
+			"item": [
+				{
+					"name": "Auth - Register (crear cuenta)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Juan Pérez\",\r\n  \"email\": \"juan@example.com\",\r\n  \"password\": \"supersegura123\",\r\n  \"role\": \"student\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:2003/api/v1/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "2003",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth - Login (iniciar sesión)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"juan@example.com\",\r\n  \"password\": \"supersegura123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:2003/api/v1/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "2003",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth - Validar cuenta (obtener la sesión)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:2003/api/v1/auth/validate",
+							"host": [
+								"localhost"
+							],
+							"port": "2003",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth - Eliminar usuario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:2003/api/v1/user/delete",
+							"host": [
+								"localhost"
+							],
+							"port": "2003",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth - Cerrar Sesión",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:2003/api/v1/auth/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "2003",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth - Información del user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:2003/api/v1/user/me",
+							"host": [
+								"localhost"
+							],
+							"port": "2003",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "courses",
+			"item": [
+				{
+					"name": "Auth - Login Elena (iniciar sesión)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"elena@golearnix.com\",\r\n  \"password\": \"HelloWorld7\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:2003/api/v1/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "2003",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Administrador",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"admin@golearnix.com\",\r\n  \"password\": \"admin\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:2003/api/v1/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "2003",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener todos los cursos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/golearnix/courses",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"golearnix",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener los detalles de un curso",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/golearnix/courses/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"golearnix",
+								"courses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insertar un curso",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Introducción a la Programación\",\r\n  \"description\": \"Curso básico para aprender los fundamentos de la programación.\",\r\n  \"instructor\": {\r\n    \"id\": \"1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d\"\r\n  },\r\n  \"category\": {\r\n    \"id\": 1\r\n  },\r\n  \"sections\": [\r\n    { \"id\": 1 },\r\n    { \"id\": 2 }\r\n  ],\r\n  \"reviews\": [\r\n    { \"id\": 1 },\r\n    { \"id\": 2 }\r\n  ],\r\n  \"enrollments\": [\r\n    { \"id\": 1 },\r\n    { \"id\": 2 }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/golearnix/courses",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"golearnix",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inscribir un usuario en un curso",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/golearnix/courses/1/enrollments",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"golearnix",
+								"courses",
+								"1",
+								"enrollments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Completar una lección",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/golearnix/courses/1/sections/1/lessons/1/complete",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"golearnix",
+								"courses",
+								"1",
+								"sections",
+								"1",
+								"lessons",
+								"1",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar un curso",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Introducción a la Programación\",\r\n  \"description\": \"Curso básico para aprender los fundamentos de la programación.\",\r\n  \"instructor\": {\r\n    \"id\": \"1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d\"\r\n  },\r\n  \"category\": {\r\n    \"id\": 1\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/golearnix/courses/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"golearnix",
+								"courses",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar un curso",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/golearnix/courses/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"golearnix",
+								"courses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjNlNDU2Ny1lODliLTEyZDMtYTQ1Ni00MjY2MTQxNzQwMDAiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NDgwODU4NzAsImlhdCI6MTc0Nzk5OTQ3MCwianRpIjoiYjk5Zjg2MmQtMTAyOC00NWY2LThhY2MtN2U2NWQ0NzU0ZmU3In0.WxsNsRiKfBUgABep4plmSyCro615myIe2AZTQaHO8ak",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiYmEzMmEzMC03MTcxLTRhNTYtODQ4MS00NDIyNGM2Nzg4ZjIiLCJyb2xlIjoic3R1ZGVudCIsImV4cCI6MTc0ODA4NjIwMSwiaWF0IjoxNzQ3OTk5ODAxLCJqdGkiOiIwYzE0NjU5Ni1lN2FhLTQxODUtODQyMC1kNGMxNzNkNWRkYjAifQ.jLEC4t7JSvLezhVI6qAd7tjSyRxcex0mfof2Skau8UI",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "jwt",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

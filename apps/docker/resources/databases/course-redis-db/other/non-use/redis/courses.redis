@@ -1,2 +1,0 @@
-HSET course:1 title "Go Masterclass" description "Learn Go from beginner to expert." category_id "1" instructor_id "e7b9a1f2-3c4d-4e5f-9a2b-7c8d9e0f1a2b" created_at "2025-05-03 23:09:22.059223+02" updated_at "2025-05-03 23:09:22.059223+02"
-HSET course:2 title "Introduction to UX Design" description "Fundamentals of UX and user experience." category_id "2" instructor_id "a1d2c3e4-f5b6-7a8c-9d0e-1f2a3b4c5d6e" created_at "2025-05-03 23:09:22.059223+02" updated_at "2025-05-03 23:09:22.059223+02"

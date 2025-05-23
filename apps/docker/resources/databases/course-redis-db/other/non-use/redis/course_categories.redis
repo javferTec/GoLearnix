@@ -1,2 +1,0 @@
-HSET course_category:1 name "Programming" description "Software development courses."
-HSET course_category:2 name "Design" description "Graphic design and UX/UI courses."

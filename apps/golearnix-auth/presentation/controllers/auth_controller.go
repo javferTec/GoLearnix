@@ -39,7 +39,6 @@ func (ac *AuthController) RegisterHandler(c *fiber.Ctx) error {
 
 	if err := ac.AuthService.Register(req); err != nil {
 		log.Printf("Error al registrar usuario: %v", err)
-		// podrías discriminar ErrEmailExists para devolver 409
 		return response.Error(c, fiber.StatusInternalServerError, err.Error())
 	}
 

@@ -9,7 +9,7 @@ import (
 
 // PublishUserDeleted publica un evento cuando un usuario es eliminado
 func (p *EventPublisher) PublishUserDeleted(event events.UserDeletedEvent) error {
-
+	// Crear el evento de usuario eliminado
 	body, err := json.Marshal(struct {
 		Event string                  `json:"event"`
 		Data  events.UserDeletedEvent `json:"data"`
@@ -21,6 +21,7 @@ func (p *EventPublisher) PublishUserDeleted(event events.UserDeletedEvent) error
 		return fmt.Errorf("error serializando evento: %w", err)
 	}
 
+	// Publicar el evento en RabbitMQ
 	err = p.channel.Publish(
 		"golearnix.events", // exchange
 		"user.deleted",     // routing key

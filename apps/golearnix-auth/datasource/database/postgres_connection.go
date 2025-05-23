@@ -26,10 +26,9 @@ func Connect() error {
 	}
 
 	if err := db.AutoMigrate(
-		&models2.User{},    // Migrar el modelo de User
-		&models2.Session{}, // Migrar el modelo de Session
+		&models2.User{},  
+		&models2.Session{},
 	); err != nil {
-		//log.Printf("❌ Error al ejecutar las migraciones: %v\n", err)
 		return err
 	}
 

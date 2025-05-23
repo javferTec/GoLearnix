@@ -30,7 +30,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping(CourseControllerAdapter.URL)
 @CrossOrigin(origins = "${api.cors.allowed-origins}")
-@Tag(name = "Courses", description = "Controller used to course management") // TODO: Swagger
+@Tag(name = "Courses", description = "Controller used to course management")
 public class CourseControllerAdapter {
 
   protected static final String URL = "${api.base-path}" + "/courses";

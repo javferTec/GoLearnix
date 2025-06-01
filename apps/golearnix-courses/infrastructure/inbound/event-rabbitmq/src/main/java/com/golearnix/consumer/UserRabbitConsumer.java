@@ -1,0 +1,29 @@
+package com.golearnix.consumer;
+
+import com.golearnix.common.annotations.EventAdapter;
+import com.golearnix.common.dto.messages.UserDeletedEvent;
+import com.golearnix.ports.inbound.UserService;
+import com.rabbitmq.client.Channel;
+import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.support.AmqpHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+
+import java.io.IOException;
+import java.util.UUID;
+
+@EventAdapter
+@RequiredArgsConstructor
+public class UserRabbitConsumer {
+
+  private final UserService userServicePort;
+
+  @RabbitListener(queues = "user.deleted.queue", containerFactory = "rabbitListenerContainerFactory")
+  public void delete(UserDeletedEvent event, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws IOException {
+
+    userServicePort.delete(UUID.fromString(event.getData().getUserID()));
+    channel.basicAck(tag, false);
+
+  }
+
+}

@@ -27,15 +27,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:2003/api/v1/auth/register",
+							"raw": "{{go_base_path}}auth/register",
 							"host": [
-								"localhost"
+								"{{go_base_path}}auth"
 							],
-							"port": "2003",
 							"path": [
-								"api",
-								"v1",
-								"auth",
 								"register"
 							]
 						}
@@ -60,15 +56,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:2003/api/v1/auth/login",
+							"raw": "{{go_base_path}}auth/login",
 							"host": [
-								"localhost"
+								"{{go_base_path}}auth"
 							],
-							"port": "2003",
 							"path": [
-								"api",
-								"v1",
-								"auth",
 								"login"
 							]
 						}
@@ -81,15 +73,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:2003/api/v1/auth/validate",
+							"raw": "{{go_base_path}}auth/validate",
 							"host": [
-								"localhost"
+								"{{go_base_path}}auth"
 							],
-							"port": "2003",
 							"path": [
-								"api",
-								"v1",
-								"auth",
 								"validate"
 							]
 						}
@@ -102,15 +90,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:2003/api/v1/user/delete",
+							"raw": "{{go_base_path}}user/delete",
 							"host": [
-								"localhost"
+								"{{go_base_path}}user"
 							],
-							"port": "2003",
 							"path": [
-								"api",
-								"v1",
-								"user",
 								"delete"
 							]
 						}
@@ -123,15 +107,11 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "localhost:2003/api/v1/auth/logout",
+							"raw": "{{go_base_path}}auth/logout",
 							"host": [
-								"localhost"
+								"{{go_base_path}}auth"
 							],
-							"port": "2003",
 							"path": [
-								"api",
-								"v1",
-								"auth",
 								"logout"
 							]
 						}
@@ -144,15 +124,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:2003/api/v1/user/me",
+							"raw": "{{go_base_path}}user/me",
 							"host": [
-								"localhost"
+								"{{go_base_path}}user"
 							],
-							"port": "2003",
 							"path": [
-								"api",
-								"v1",
-								"user",
 								"me"
 							]
 						}
@@ -204,15 +180,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:2003/api/v1/auth/login",
+							"raw": "{{go_base_path}}auth/login",
 							"host": [
-								"localhost"
+								"{{go_base_path}}auth"
 							],
-							"port": "2003",
 							"path": [
-								"api",
-								"v1",
-								"auth",
 								"login"
 							]
 						}
@@ -220,7 +192,7 @@
 					"response": []
 				},
 				{
-					"name": "Administrador",
+					"name": "Auth - Login Administrador",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -237,15 +209,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:2003/api/v1/auth/login",
+							"raw": "{{go_base_path}}auth/login",
 							"host": [
-								"localhost"
+								"{{go_base_path}}auth"
 							],
-							"port": "2003",
 							"path": [
-								"api",
-								"v1",
-								"auth",
 								"login"
 							]
 						}
@@ -255,19 +223,15 @@
 				{
 					"name": "Obtener todos los cursos",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/golearnix/courses",
+							"raw": "{{java_base_path}}courses",
 							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"golearnix",
-								"courses"
+								"{{java_base_path}}courses"
 							]
 						}
 					},
@@ -276,19 +240,17 @@
 				{
 					"name": "Obtener los detalles de un curso",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/golearnix/courses/1",
+							"raw": "{{java_base_path}}courses/1",
 							"host": [
-								"localhost"
+								"{{java_base_path}}courses"
 							],
-							"port": "8080",
 							"path": [
-								"api",
-								"v1",
-								"golearnix",
-								"courses",
 								"1"
 							]
 						}
@@ -310,16 +272,9 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/golearnix/courses",
+							"raw": "{{java_base_path}}courses",
 							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"golearnix",
-								"courses"
+								"{{java_base_path}}courses"
 							]
 						}
 					},
@@ -331,17 +286,12 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/golearnix/courses/1/enrollments",
+							"raw": "{{java_base_path}}courses/4/enrollments",
 							"host": [
-								"localhost"
+								"{{java_base_path}}courses"
 							],
-							"port": "8080",
 							"path": [
-								"api",
-								"v1",
-								"golearnix",
-								"courses",
-								"1",
+								"4",
 								"enrollments"
 							]
 						}
@@ -354,16 +304,11 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/golearnix/courses/1/sections/1/lessons/1/complete",
+							"raw": "{{java_base_path}}courses/1/sections/1/lessons/1/complete",
 							"host": [
-								"localhost"
+								"{{java_base_path}}courses"
 							],
-							"port": "8080",
 							"path": [
-								"api",
-								"v1",
-								"golearnix",
-								"courses",
 								"1",
 								"sections",
 								"1",
@@ -390,16 +335,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/golearnix/courses/3",
+							"raw": "{{java_base_path}}courses/3",
 							"host": [
-								"localhost"
+								"{{java_base_path}}courses"
 							],
-							"port": "8080",
 							"path": [
-								"api",
-								"v1",
-								"golearnix",
-								"courses",
 								"3"
 							]
 						}
@@ -412,16 +352,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/golearnix/courses/1",
+							"raw": "{{java_base_path}}courses/1",
 							"host": [
-								"localhost"
+								"{{java_base_path}}courses"
 							],
-							"port": "8080",
 							"path": [
-								"api",
-								"v1",
-								"golearnix",
-								"courses",
 								"1"
 							]
 						}
@@ -429,16 +364,6 @@
 					"response": []
 				}
 			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjNlNDU2Ny1lODliLTEyZDMtYTQ1Ni00MjY2MTQxNzQwMDAiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NDgwODU4NzAsImlhdCI6MTc0Nzk5OTQ3MCwianRpIjoiYjk5Zjg2MmQtMTAyOC00NWY2LThhY2MtN2U2NWQ0NzU0ZmU3In0.WxsNsRiKfBUgABep4plmSyCro615myIe2AZTQaHO8ak",
-						"type": "string"
-					}
-				]
-			},
 			"event": [
 				{
 					"listen": "prerequest",
@@ -468,7 +393,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiYmEzMmEzMC03MTcxLTRhNTYtODQ4MS00NDIyNGM2Nzg4ZjIiLCJyb2xlIjoic3R1ZGVudCIsImV4cCI6MTc0ODA4NjIwMSwiaWF0IjoxNzQ3OTk5ODAxLCJqdGkiOiIwYzE0NjU5Ni1lN2FhLTQxODUtODQyMC1kNGMxNzNkNWRkYjAifQ.jLEC4t7JSvLezhVI6qAd7tjSyRxcex0mfof2Skau8UI",
+				"value": "token_jwt",
 				"type": "string"
 			}
 		]
@@ -497,9 +422,14 @@
 	],
 	"variable": [
 		{
-			"key": "jwt",
-			"value": "",
-			"type": "default"
+			"key": "go_base_path",
+			"value": "localhost:2003/api/v1/",
+			"type": "string"
+		},
+		{
+			"key": "java_base_path",
+			"value": "localhost:8080/api/v1/",
+			"type": "string"
 		}
 	]
 }
